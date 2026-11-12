@@ -1,0 +1,84 @@
+<section class="slide" id="s-arq" style="padding-top:70px">
+  <div class="ceja">Lo que construimos</div>
+  <h2 style="margin-bottom:22px">Tres capas aisladas en una VPC real, en <em>Ohio</em></h2>
+  <style>
+    #s-arq .arq{display:grid;grid-template-columns:200px 1fr;gap:26px;flex:1;min-height:0}
+    #s-arq .net{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;padding-top:150px;text-align:center}
+    #s-arq .nube{border:2px solid var(--naranja);border-radius:20px;padding:12px 16px 14px;display:flex;flex-direction:column;gap:8px;background:#232F3E99}
+    #s-arq .vpc{border:2.5px solid var(--red);border-radius:16px;padding:10px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1;background:#8C4FFF0D}
+    #s-arq .capa{display:grid;grid-template-columns:270px 1fr 1fr;gap:14px;flex:1}
+    #s-arq .rot{display:flex;flex-direction:column;justify-content:center;gap:6px}
+    #s-arq .rot h3{font-size:28px}#s-arq .rot p{font-size:21px;line-height:1.3}
+    #s-arq .sub{border:2px solid;border-radius:14px;padding:8px 14px 10px;display:flex;flex-direction:column;gap:4px}
+    #s-arq .sub .cidr{font-family:var(--mono);font-size:20px;opacity:.9}
+    #s-arq .items{display:flex;gap:22px;align-items:center;flex:1}
+    #s-arq .item{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:650;line-height:1.2}
+    #s-arq .item small{display:block;font-size:19px;font-weight:400;color:var(--suave);font-family:var(--mono)}
+    #s-arq .item img{width:58px;height:58px;border-radius:6px}
+    #s-arq .vacio{color:var(--tenue);font-size:21px;font-style:italic;font-weight:400}
+    #s-arq .salto{display:grid;grid-template-columns:270px 1fr 1fr;gap:14px;height:34px;align-items:center}
+    #s-arq .salto span{font-family:var(--mono);font-size:21px;font-weight:700;color:var(--naranja);padding-left:16px}
+    #s-arq .pub{border-color:var(--publica);background:#7AA1161F}#s-arq .pri{border-color:var(--privada);background:#00A4A61F}#s-arq .dat{border-color:var(--datos);background:#C925D11F}
+    #punto{position:absolute!important;width:30px;height:30px;border-radius:50%;background:var(--naranja);box-shadow:0 0 0 8px #FF990040,0 0 30px #FF9900;left:0;top:0;opacity:0;z-index:5;pointer-events:none}
+    #punto.malo{background:var(--no);box-shadow:0 0 0 8px #FF6B6B40,0 0 30px #FF6B6B}
+    #bloqueo{position:absolute!important;left:112px;bottom:150px;z-index:6;width:200px;white-space:normal;text-align:center;border-radius:16px}
+  </style>
+  <div class="arq">
+    <div class="net">
+      <img id="hop-net" class="ico g inv" src="{{img:logos/users.svg}}">
+      <h3>Internet</h3>
+      <span class="paso mono" data-paso="1" style="font-size:22px;font-weight:700;color:var(--naranja)">HTTP :80 →</span>
+    </div>
+    <div class="nube">
+      <div class="fila" style="align-items:center;gap:12px"><img src="{{img:logos/aws-cloud-logo.svg}}" style="height:38px;border-radius:5px"><b style="font-size:23px">Región us-east-2 (Ohio)</b>
+        <span style="flex:1"></span><img src="{{img:logos/aws-flowlogs.svg}}" style="height:38px;background:#fff;border-radius:50%;padding:3px"><span style="font-size:21px;color:var(--suave)">Registros de tráfico activos</span></div>
+      <div class="vpc">
+        <div class="salto" style="height:44px">
+          <div class="fila" style="align-items:center;gap:10px"><img src="{{img:logos/aws-vpc.svg}}" style="height:42px;border-radius:5px"><b class="mono" style="font-size:22px">VPC 10.0.0.0/16</b></div>
+          <b style="font-size:21px;color:var(--suave);text-align:center">Zona us-east-2a</b><b style="font-size:21px;color:var(--suave);text-align:center">Zona us-east-2b</b>
+        </div>
+        <div class="capa">
+          <div class="rot"><h3 style="color:#A6D13C">Capa pública</h3><span class="chip" style="color:#A6D13C;font-size:20px;align-self:flex-start">≈ VLAN 10 · DMZ</span><p>Ruta a Internet por la puerta de enlace</p></div>
+          <div class="sub pub"><span class="cidr">10.0.1.0/24</span><div class="items">
+            <div class="item"><img id="hop-alb" src="{{img:logos/aws-elb.svg}}"><span>Balanceador<small>:80</small></span></div>
+            <div class="item"><img src="{{img:logos/aws-nat.svg}}" style="background:#fff;border-radius:50%;padding:3px"><span>NAT</span></div>
+            <div class="item"><img id="hop-pru" src="{{img:logos/aws-instance.svg}}" style="background:#fff;padding:5px"><span>Equipo de<br>pruebas</span></div></div></div>
+          <div class="sub pub"><span class="cidr">10.0.2.0/24</span><div class="items"><div class="item"><img src="{{img:logos/aws-elb.svg}}"><span>Balanceador<small>segunda zona</small></span></div></div></div>
+        </div>
+        <div class="salto"><div></div><span class="paso" data-paso="2">↓ TCP 8080 · solo desde el balanceador</span><div></div></div>
+        <div class="capa">
+          <div class="rot"><h3 style="color:#35D0D2">Capa de aplicación</h3><span class="chip" style="color:#35D0D2;font-size:20px;align-self:flex-start">≈ VLAN 20</span><p>Sin IP pública · sale por el NAT</p></div>
+          <div class="sub pri"><span class="cidr">10.0.11.0/24</span><div class="items">
+            <div class="item"><img id="hop-app" src="{{img:logos/aws-ec2.svg}}"><span>Servidor de la API<small>10.0.11.235:8080</small></span></div>
+            <img src="{{img:logos/docker.svg}}" style="height:54px"><img src="{{img:logos/nodejs.svg}}" style="height:50px"></div></div>
+          <div class="sub pri"><span class="cidr">10.0.12.0/24</span><div class="items"><span class="vacio">Lista para un segundo servidor</span></div></div>
+        </div>
+        <div class="salto"><div></div><span class="paso" data-paso="3">↓ TCP 3306 · solo desde la aplicación</span><div></div></div>
+        <div class="capa">
+          <div class="rot"><h3 style="color:#E678EC">Capa de datos</h3><span class="chip" style="color:#E678EC;font-size:20px;align-self:flex-start">≈ VLAN 30</span><p>Sin ninguna ruta a Internet</p></div>
+          <div class="sub dat"><span class="cidr">10.0.21.0/24</span><div class="items">
+            <div class="item"><img id="hop-bd" src="{{img:logos/aws-rds.svg}}"><span>MySQL 8 administrado<small>10.0.21.29:3306</small></span></div>
+            <img src="{{img:logos/mysql.svg}}" style="height:58px;background:#fff;border-radius:10px;padding:4px"></div></div>
+          <div class="sub dat"><span class="cidr">10.0.22.0/24</span><div class="items"><span class="vacio">Reserva de la base de datos</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="punto"></div>
+  <div id="bloqueo" class="paso chip" data-paso="4" style="color:var(--no);background:#161E2D;font-size:22px;padding:12px 14px;line-height:1.3">✕ Directo a la base de datos: bloqueado</div>
+  <div style="height:38px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>VLANs en AWS · Redes de Datos II</span><span class="n"></span></div>
+  <script>
+  (() => {
+    const s = document.getElementById('s-arq'), punto = document.getElementById('punto');
+    const centro = id => { const k = s.getBoundingClientRect().width / 1920, r = document.getElementById(id).getBoundingClientRect(), o = s.getBoundingClientRect();
+      return [(r.left + r.width / 2 - o.left) / k - 15, (r.top + r.height / 2 - o.top) / k - 15]; };
+    const viajar = (de, a, malo) => { const [x1, y1] = centro(de), [x2, y2] = centro(a); punto.classList.toggle('malo', !!malo);
+      const fin = malo ? [x1 + (x2 - x1) * .45, y1 + (y2 - y1) * .45] : [x2, y2];
+      punto.animate([{ transform: `translate(${x1}px,${y1}px)`, opacity: 1 }, { transform: `translate(${fin[0]}px,${fin[1]}px)`, opacity: 1, offset: .8 },
+        { transform: `translate(${fin[0]}px,${fin[1]}px) scale(${malo ? 2.4 : 1.6})`, opacity: 0 }], { duration: malo ? 1500 : 1300, easing: 'ease-in-out', iterations: malo ? 2 : 3 }); };
+    s.addEventListener('paso', e => { const n = e.detail;
+      if (n === 1) viajar('hop-net', 'hop-alb'); if (n === 2) viajar('hop-alb', 'hop-app'); if (n === 3) viajar('hop-app', 'hop-bd'); if (n === 4) viajar('hop-net', 'hop-bd', true); });
+  })();
+  </script>
+</section>

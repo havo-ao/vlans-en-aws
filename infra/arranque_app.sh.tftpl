@@ -1,0 +1,13 @@
+#!/bin/bash
+# Se ejecuta una sola vez al crear el servidor: instala Docker, copia la aplicación y la arranca.
+set -euxo pipefail
+dnf install -y docker
+systemctl enable --now docker
+mkdir -p /opt/app/public
+cd /opt/app
+%{ for ruta, contenido in archivos ~}
+echo '${contenido}' | base64 -d > '${ruta}'
+%{ endfor ~}
+docker build -t reservas .
+docker run -d --name reservas --restart unless-stopped --network host \
+  -e DB_HOST='${bd_host}' -e DB_USER='${bd_user}' -e DB_PASS='${bd_pass}' -e DB_NAME='${bd_name}' reservas

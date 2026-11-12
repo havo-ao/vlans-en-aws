@@ -1,0 +1,25 @@
+<section class="slide">
+  <div class="ceja">Demo</div>
+  <h2>Una reserva real atraviesa las tres capas</h2>
+  <div class="fila crece" style="gap:24px;min-height:0;align-items:flex-start">
+    <div class="col" style="flex:1;gap:10px"><div class="cap"><img src="{{img:img/demo1.png}}"></div><p class="nota"><b>1.</b> Se llena el formulario desde Internet, a través del balanceador.</p></div>
+    <div class="col paso" data-paso="1" style="flex:1;gap:10px"><div class="cap"><img src="{{img:img/demo2.png}}"></div><p class="nota"><b>2.</b> La reserva n.º 4 aparece guardada: la API la escribió en la base de datos.</p></div>
+    <div class="col paso" data-paso="2" style="flex:.92;gap:14px">
+      <div class="term" style="font-size:19px;line-height:1.5"><span class="p">$</span> curl http://vlans-balanceador-…/api/info
+HTTP/1.1 <span class="ok">200 OK</span>
+Content-Type: application/json
+
+{
+  "cliente":     "181.234.•••.•••",
+  "balanceador": "10.0.2.226",
+  "servidorApp": "10.0.11.235",
+  "baseDeDatos": "10.0.21.29"
+}</div>
+      <p class="nota"><b>3.</b> La propia API informa por dónde pasó la petición: un salto por cada capa.</p>
+      <div class="tarjeta" style="padding:16px 20px"><p style="font-size:20px;letter-spacing:3px;text-transform:uppercase;color:var(--naranja);font-weight:700">En vivo</p>
+        <p class="mono" style="font-size:17.5px;color:var(--texto);margin-top:6px;white-space:nowrap">vlans-balanceador-2110447132.us-east-2.elb.amazonaws.com</p></div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Capturas de la aplicación desplegada · 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>

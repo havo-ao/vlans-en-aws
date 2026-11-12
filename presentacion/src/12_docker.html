@@ -1,0 +1,51 @@
+<section class="slide">
+  <div class="ceja">Cómo se construyó · aplicación</div>
+  <h2>La API corre en <em>Docker</em> dentro de la subred privada</h2>
+  <div class="fila" style="gap:14px;align-items:center;margin-bottom:20px">
+    <span class="chip" style="color:#B69BFF"><img src="{{img:logos/terraform.svg}}" style="height:28px">Terraform crea el servidor</span><span style="font-size:30px;color:var(--naranja)">→</span>
+    <span class="chip" style="color:#6CB8F5"><img src="{{img:logos/docker.svg}}" style="height:28px">instala Docker al arrancar</span><span style="font-size:30px;color:var(--naranja)">→</span>
+    <span class="chip" style="color:#6CB8F5">construye la imagen</span><span style="font-size:30px;color:var(--naranja)">→</span>
+    <span class="chip" style="color:#7EE787"><img src="{{img:logos/nodejs.svg}}" style="height:28px">ejecuta el contenedor :8080</span>
+  </div>
+  <div class="fila crece" style="gap:28px;min-height:0">
+    <div class="col" style="flex:.9;gap:14px;min-height:0">
+      <div class="fila" style="align-items:center;gap:14px"><img src="{{img:logos/docker.svg}}" style="height:54px"><h3>Dockerfile</h3></div>
+      <div class="term" style="font-size:18.5px;line-height:1.45"><span class="p">FROM</span> public.ecr.aws/docker/library/node:22-alpine
+<span class="p">WORKDIR</span> /app
+<span class="p">COPY</span> package.json .
+<span class="p">RUN</span> npm install --omit=dev
+<span class="p">COPY</span> . .
+<span class="p">EXPOSE</span> 8080
+<span class="p">CMD</span> ["node", "server.js"]</div>
+      <h3 style="font-size:26px;margin-top:6px">Arranque del servidor (lo ejecuta AWS)</h3>
+      <div class="term crece" style="font-size:18.5px;line-height:1.45">dnf install -y docker
+systemctl enable --now docker
+docker build -t reservas .
+docker run -d --name reservas \
+  --restart unless-stopped --network host \
+  -e DB_HOST=… -e DB_USER=… -e DB_PASS=… reservas</div>
+    </div>
+    <div class="col" style="flex:1.1;gap:14px;min-height:0">
+      <div class="fila" style="align-items:center;gap:14px"><img src="{{img:logos/aws-ec2.svg}}" style="height:54px;border-radius:6px"><h3>Salida real del servidor <span class="mono" style="color:var(--naranja)">10.0.11.235</span></h3></div>
+      <div class="term crece" style="font-size:18.5px;line-height:1.45"><span class="p">$</span> docker --version
+Docker version 25.0.14, build 0bab007
+
+<span class="p">$</span> docker ps
+NAMES      IMAGE      STATUS
+reservas   reservas   <span class="ok">Up 20 minutes</span>
+
+<span class="p">$</span> docker images
+REPOSITORY   TAG       SIZE
+reservas     latest    191MB
+
+<span class="p">$</span> docker logs reservas
+API escuchando en 8080
+<span class="ok">Base de datos lista</span>
+
+<span class="p">$</span> ss -ltnp | grep 8080
+LISTEN 0.0.0.0:8080 users:(("node",pid=20746))</div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Comandos ejecutados en el servidor mediante Systems Manager · 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>

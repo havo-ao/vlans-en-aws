@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="ceja">El reemplazo de la VLAN</div>
+  <h2>La subred por dentro: un <em>rango IP</em> con reglas propias</h2>
+  <div class="tarjeta" style="padding:24px 28px">
+    <div class="fila" style="align-items:center;gap:16px;margin-bottom:14px"><img src="{{img:logos/aws-private-subnet.svg}}" style="height:52px;border-radius:6px"><h3 class="mono">10.0.21.0/24</h3><p style="font-size:24px">256 direcciones, de las cuales AWS reserva cinco</p></div>
+    <div class="fila mono" style="gap:8px;font-size:22px;text-align:center">
+      <div style="flex:1.4;border:2px solid var(--no);border-radius:10px;padding:12px 4px;color:#FF8A8A"><b style="color:#FF8A8A">.0</b><br><span style="font-family:var(--sans);color:var(--suave)">red</span></div>
+      <div style="flex:1.4;border:2px solid var(--no);border-radius:10px;padding:12px 4px"><b style="color:#FF8A8A">.1</b><br><span style="font-family:var(--sans);color:var(--suave)">router de la VPC</span></div>
+      <div style="flex:1.4;border:2px solid var(--no);border-radius:10px;padding:12px 4px"><b style="color:#FF8A8A">.2</b><br><span style="font-family:var(--sans);color:var(--suave)">DNS</span></div>
+      <div style="flex:1.4;border:2px solid var(--no);border-radius:10px;padding:12px 4px"><b style="color:#FF8A8A">.3</b><br><span style="font-family:var(--sans);color:var(--suave)">uso futuro</span></div>
+      <div style="flex:5;border:2px solid var(--ok);border-radius:10px;padding:12px 4px;background:#3FB9501F"><b style="color:#56D364">.4 … .254</b><br><span style="font-family:var(--sans);color:var(--suave)">251 direcciones utilizables</span></div>
+      <div style="flex:2;border:2px solid var(--no);border-radius:10px;padding:12px 4px"><b style="color:#FF8A8A">.255</b><br><span style="font-family:var(--sans);color:var(--suave)">broadcast (no se usa)</span></div>
+    </div>
+  </div>
+  <div class="fila crece paso" data-paso="1" style="gap:24px;margin-top:24px">
+    <div class="tarjeta crece col" style="border-color:var(--publica);gap:10px"><div class="fila" style="align-items:center;gap:14px"><img src="{{img:logos/aws-public-subnet.svg}}" style="height:56px;border-radius:6px"><h3 style="color:#A6D13C">Subred pública</h3></div>
+      <p style="font-size:25px">Su tabla de ruteo tiene una ruta directa a la puerta de enlace de Internet.</p><span style="flex:1"></span><span class="chip" style="color:#A6D13C;align-self:flex-start">Nuestra capa pública</span></div>
+    <div class="tarjeta crece col" style="border-color:var(--privada);gap:10px"><div class="fila" style="align-items:center;gap:14px"><img src="{{img:logos/aws-private-subnet.svg}}" style="height:56px;border-radius:6px"><h3 style="color:#35D0D2">Subred privada</h3></div>
+      <p style="font-size:25px">Sin ruta directa a Internet. Para salir necesita un NAT, y solo ella puede iniciar la conexión.</p><span style="flex:1"></span><span class="chip" style="color:#35D0D2;align-self:flex-start">Nuestra capa de aplicación</span></div>
+    <div class="tarjeta crece col" style="border-color:var(--datos);gap:10px"><div class="fila" style="align-items:center;gap:14px"><img src="{{img:logos/aws-private-subnet.svg}}" style="height:56px;border-radius:6px;filter:hue-rotate(120deg)"><h3 style="color:#E678EC">Subred aislada</h3></div>
+      <p style="font-size:25px">Sin rutas hacia fuera de la VPC: solo conoce la ruta local.</p><span style="flex:1"></span><span class="chip" style="color:#E678EC;align-self:flex-start">Nuestra capa de datos</span></div>
+  </div>
+  <div class="fila paso" data-paso="2" style="gap:18px;margin-top:22px;justify-content:center">
+    <span class="chip" style="color:var(--suave)">Una subred vive en una sola zona de disponibilidad</span>
+    <span class="chip" style="color:var(--suave)">Tamaño: de /16 a /28</span>
+    <span class="chip" style="color:var(--suave)">Por defecto: 200 subredes por VPC · 5 VPC por región</span>
+  </div>
+  <div style="height:46px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Fuente: AWS (s.f.-a, s.f.-g, s.f.-i, s.f.-j)</span><span class="n"></span></div>
+</section>

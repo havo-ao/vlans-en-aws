@@ -1,0 +1,16 @@
+# Estado de Terraform: contiene la clave de la base de datos
+infra/.terraform/
+infra/*.tfstate*
+infra/*.tfplan
+infra/apply.log
+
+# Capturas con datos de la cuenta o de la conexión
+capturas/01_cuenta/
+capturas/03_despliegue/
+capturas/05_consola/
+
+presentacion/revision/
+libreto/
+manual/
+node_modules/
+.DS_Store

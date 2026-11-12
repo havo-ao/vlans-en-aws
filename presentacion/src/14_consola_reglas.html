@@ -1,0 +1,17 @@
+<section class="slide">
+  <div class="ceja">Las reglas en la consola de AWS</div>
+  <h2>Las tres barreras de la capa de datos, en AWS</h2>
+  <style>.rg{display:grid;grid-template-columns:400px 1fr;gap:16px 26px;flex:1;align-content:space-between;align-items:center}
+    .rg .t{display:flex;flex-direction:column;gap:6px}.rg .t h3{display:flex;align-items:center;gap:12px;font-size:29px}
+    .rg .t h3 img{width:50px;height:50px;background:#fff;border-radius:50%;padding:3px}.rg .t p{font-size:23px;line-height:1.3}</style>
+  <div class="rg">
+    <div class="t"><h3><img src="{{img:logos/aws-router.svg}}">Tabla de ruteo</h3><p>Una sola ruta: <b class="mono">10.0.0.0/16 → local</b>. No hay camino hacia Internet.</p></div>
+    <div class="cap"><img src="{{img:img/con_rt.png}}"></div>
+    <div class="t paso" data-paso="1"><h3><img src="{{img:logos/aws-eni.svg}}">Security Group</h3><p>Una sola regla de entrada: MySQL, TCP <b class="mono">3306</b>, y el origen es <b>otro grupo</b> (el de la aplicación).</p></div>
+    <div class="cap paso" data-paso="1"><img src="{{img:img/con_sg.png}}"></div>
+    <div class="t paso" data-paso="2"><h3><img src="{{img:logos/aws-nacl.svg}}">NACL</h3><p>Reglas 100 y 110 permiten 3306 desde <b class="mono">10.0.11.0/24</b> y <b class="mono">10.0.12.0/24</b>; todo lo demás, <b style="color:var(--no)">Deny</b>.</p></div>
+    <div class="cap paso" data-paso="2"><img src="{{img:img/con_nacl.png}}"></div>
+  </div>
+  <div style="height:46px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Capturas de la consola de AWS · región us-east-2 · 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>

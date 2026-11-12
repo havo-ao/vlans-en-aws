@@ -1,0 +1,38 @@
+<section class="slide">
+  <div class="ceja">Cómo se aísla</div>
+  <h2>Tres barreras independientes entre Internet y los datos</h2>
+  <style>
+    .b3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px;flex:1}
+    .b3 .tarjeta{display:flex;flex-direction:column;gap:18px;padding:28px 30px}.b3 .tarjeta>p{font-size:25px!important}
+    .b3 .cab{display:flex;align-items:center;gap:16px}
+    .b3 .cab img{width:70px;height:70px;background:#fff;border-radius:50%;padding:5px}
+    .b3 .cab p{font-size:22px;line-height:1.25}
+    .regla{border-radius:12px;padding:12px 16px;border-left:6px solid;background:#ffffff0a}
+    .regla b{display:block;font-size:27px}
+    .regla span{font-family:var(--mono);font-size:22px;color:var(--suave);display:block;line-height:1.55}
+    .regla .si{color:#7EE787}.regla .no{color:var(--no)}
+  </style>
+  <div class="b3">
+    <div class="tarjeta">
+      <div class="cab"><img src="{{img:logos/aws-router.svg}}"><div><h3>1 · Tablas de ruteo</h3><p>¿Por dónde puede salir cada subred?</p></div></div>
+      <div class="regla" style="border-color:var(--publica)"><b>Capa pública</b><span>10.0.0.0/16 → local</span><span class="si">0.0.0.0/0  → Internet</span></div>
+      <div class="regla" style="border-color:var(--privada)"><b>Capa de aplicación</b><span>10.0.0.0/16 → local</span><span class="si">0.0.0.0/0  → NAT (solo salida)</span></div>
+      <div class="regla" style="border-color:var(--datos)"><b>Capa de datos</b><span>10.0.0.0/16 → local</span><span class="no">sin ruta a Internet</span></div>
+    </div>
+    <div class="tarjeta paso" data-paso="1">
+      <div class="cab"><img src="{{img:logos/aws-eni.svg}}"><div><h3>2 · Security Groups</h3><p>Con estado, por servidor. Encadenados.</p></div></div>
+      <div class="regla" style="border-color:var(--publica)"><b>sg-balanceador</b><span>acepta TCP 80</span><span>desde 0.0.0.0/0</span></div>
+      <div class="regla" style="border-color:var(--privada)"><b>sg-app</b><span>acepta TCP 8080</span><span class="si">solo desde sg-balanceador</span></div>
+      <div class="regla" style="border-color:var(--datos)"><b>sg-datos</b><span>acepta TCP 3306</span><span class="si">solo desde sg-app</span></div>
+      <p style="font-size:22px">La regla nombra a un <b>grupo</b>, no a una IP: sigue valiendo aunque cambien los servidores.</p>
+    </div>
+    <div class="tarjeta paso" data-paso="2">
+      <div class="cab"><img src="{{img:logos/aws-nacl.svg}}"><div><h3>3 · NACL de datos</h3><p>Sin estado, por subred: la ACL del router.</p></div></div>
+      <div class="regla" style="border-color:var(--datos)"><b>Entrada</b><span class="si">100  permitir 3306 ← 10.0.11.0/24</span><span class="si">110  permitir 3306 ← 10.0.12.0/24</span><span class="no">  *  denegar todo lo demás</span></div>
+      <div class="regla" style="border-color:var(--datos)"><b>Salida</b><span class="si">100  permitir 1024-65535 → app</span><span class="no">  *  denegar todo lo demás</span></div>
+      <p style="font-size:22px">Al no tener estado, la <b>respuesta</b> necesita su propia regla de salida.</p>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Fuente: AWS (s.f.-b, s.f.-c, s.f.-h)</span><span class="n"></span></div>
+</section>

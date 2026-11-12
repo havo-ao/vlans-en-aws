@@ -1,0 +1,21 @@
+<section class="slide">
+  <div class="ceja">La red en la consola de AWS</div>
+  <h2>Seis subredes, cuatro tablas de ruteo y dos salidas</h2>
+  <style>.cap{border-radius:14px;overflow:hidden;border:1px solid var(--linea);background:#fff;box-shadow:0 12px 40px #0008}.cap img{width:100%;display:block}
+    .nota{font-size:23px;line-height:1.35;color:var(--suave)}.nota b{color:var(--naranja)}</style>
+  <div class="fila crece" style="gap:26px;min-height:0;align-items:flex-start">
+    <div class="col" style="flex:2.3;gap:14px">
+      <div class="cap"><img src="{{img:img/mapa.png}}"></div>
+      <div class="cap paso" data-paso="1"><img src="{{img:img/con_subredes.png}}"></div>
+    </div>
+    <div class="col" style="flex:1;gap:16px">
+      <div class="fila" style="align-items:center;gap:14px"><img src="{{img:logos/aws-vpc.svg}}" style="height:58px;border-radius:6px"><h3>Mapa de recursos de la VPC</h3></div>
+      <p class="nota">Las dos subredes <b>públicas</b> comparten la tabla que lleva a <b class="mono">vlans-igw</b>, la puerta de enlace de Internet.</p>
+      <p class="nota">Las de <b>aplicación</b> usan la tabla que sale por <b class="mono">vlans-nat</b>.</p>
+      <p class="nota">Las de <b>datos</b> terminan en <b class="mono">vlans-rt-datos</b>, que no se conecta con ninguna salida.</p>
+      <div class="tarjeta paso" data-paso="1" style="padding:18px 22px"><p class="nota" style="color:#DCE4F0">Cada capa tiene dos subredes, una por zona: <span class="mono">10.0.1–2</span>, <span class="mono">10.0.11–12</span> y <span class="mono">10.0.21–22</span>.</p></div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Capturas de la consola de AWS · región us-east-2 · 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>

@@ -1,0 +1,7 @@
+[["10_sg_datos_reglas","https://us-east-2.console.aws.amazon.com/vpcconsole/home?region=us-east-2#SecurityGroup:groupId=sg-0388a6173df89fd65"],
+ ["11_ruteo_datos","https://us-east-2.console.aws.amazon.com/vpcconsole/home?region=us-east-2#RouteTableDetails:RouteTableId=rtb-04f07c01cad11cfd6"],
+ ["12_nacl_datos","https://us-east-2.console.aws.amazon.com/vpcconsole/home?region=us-east-2#NetworkAclDetails:networkAclId=acl-0b397071e4b9b33ea"],
+ ["13_subredes","https://us-east-2.console.aws.amazon.com/vpcconsole/home?region=us-east-2#subnets:vpcId=vpc-05a1660bf3d7cc4c6"],
+ ["14_instancias","https://us-east-2.console.aws.amazon.com/ec2/home?region=us-east-2#Instances:instanceState=running"],
+ ["15_rds","https://us-east-2.console.aws.amazon.com/rds/home?region=us-east-2#database:id=vlans-mysql;is-cluster=false"],
+ ["16_flow_logs","https://us-east-2.console.aws.amazon.com/cloudwatch/home?region=us-east-2#logsV2:log-groups/log-group/$252Fvpc$252Fvlans-flujo"]]

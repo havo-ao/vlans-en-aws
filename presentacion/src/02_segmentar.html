@@ -1,0 +1,53 @@
+<section class="slide">
+  <div class="ceja">El problema</div>
+  <h2>En una red plana, el visitante queda<br>a <em>un salto</em> de la base de datos</h2>
+  <div class="fila crece" style="gap:36px">
+    <div class="tarjeta crece col" style="border-color:#DD344C88;gap:10px">
+      <div class="fila" style="justify-content:space-between;align-items:center"><h3>Red plana</h3><span class="chip" style="color:var(--no)">Todos se ven</span></div>
+      <svg viewBox="0 0 760 400" style="width:100%;flex:1">
+        <rect x="150" y="30" width="590" height="340" rx="22" fill="#DD344C14" stroke="#DD344C" stroke-width="2" stroke-dasharray="10 8"/>
+        <text x="445" y="64" fill="#FF8C9B" font-size="22" text-anchor="middle" font-family="-apple-system,Arial">Una sola red · 192.168.1.0/24</text>
+        <g stroke="#7C8AA0" stroke-width="2.5">
+          <line x1="300" y1="140" x2="590" y2="140"/><line x1="300" y1="140" x2="300" y2="300"/><line x1="590" y1="140" x2="590" y2="300"/>
+          <line x1="300" y1="300" x2="590" y2="300"/><line x1="300" y1="140" x2="590" y2="300"/><line x1="590" y1="140" x2="300" y2="300"/>
+        </g>
+        <path d="M70 200 C 150 200, 200 300, 300 300" fill="none" stroke="#FF6B6B" stroke-width="5" class="flujo"/>
+        <g font-family="-apple-system,Arial" font-size="22" font-weight="700" text-anchor="middle" fill="#F2F3F3">
+          <circle cx="60" cy="200" r="44" fill="#33425B"/><text x="60" y="207">Visita</text>
+          <circle cx="300" cy="140" r="46" fill="#7AA116"/><text x="300" y="147">Web</text>
+          <circle cx="590" cy="140" r="46" fill="#00A4A6"/><text x="590" y="147">App</text>
+          <circle cx="590" cy="300" r="46" fill="#545B64"/><text x="590" y="307">PCs</text>
+          <circle cx="300" cy="300" r="46" fill="#C925D1"/><text x="300" y="307">BD</text>
+        </g>
+        <text x="20" y="290" fill="#FF6B6B" font-size="22" font-weight="700" font-family="-apple-system,Arial">acceso directo</text>
+      </svg>
+    </div>
+    <div class="tarjeta crece col" style="border-color:#3FB95088;gap:10px">
+      <div class="fila" style="justify-content:space-between;align-items:center"><h3>Red segmentada</h3><span class="chip" style="color:var(--ok)">Cada capa ve solo la siguiente</span></div>
+      <svg viewBox="0 0 760 400" style="width:100%;flex:1">
+        <defs><marker id="f2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3FB950"/></marker></defs>
+        <g font-family="-apple-system,Arial" text-anchor="middle">
+          <rect x="150" y="120" width="170" height="200" rx="18" fill="#7AA11622" stroke="#7AA116" stroke-width="2.5"/>
+          <rect x="360" y="120" width="170" height="200" rx="18" fill="#00A4A622" stroke="#00A4A6" stroke-width="2.5"/>
+          <rect x="570" y="120" width="170" height="200" rx="18" fill="#C925D122" stroke="#C925D1" stroke-width="2.5"/>
+          <g font-size="20" fill="#A9B6C9"><text x="235" y="352">Segmento 1</text><text x="445" y="352">Segmento 2</text><text x="655" y="352">Segmento 3</text></g>
+          <g font-size="22" font-weight="700" fill="#F2F3F3">
+            <circle cx="60" cy="220" r="44" fill="#33425B"/><text x="60" y="227">Visita</text>
+            <circle cx="235" cy="220" r="46" fill="#7AA116"/><text x="235" y="227">Web</text>
+            <circle cx="445" cy="220" r="46" fill="#00A4A6"/><text x="445" y="227">App</text>
+            <circle cx="655" cy="220" r="46" fill="#C925D1"/><text x="655" y="227">BD</text>
+          </g>
+        </g>
+        <g stroke="#3FB950" stroke-width="4" marker-end="url(#f2)"><line x1="106" y1="220" x2="183" y2="220"/><line x1="283" y1="220" x2="393" y2="220"/><line x1="493" y1="220" x2="603" y2="220"/></g>
+        <path d="M60 172 C 60 40, 655 40, 655 168" fill="none" stroke="#FF6B6B" stroke-width="4" stroke-dasharray="12 9"/>
+        <g transform="translate(357,70)"><circle r="24" fill="#161E2D" stroke="#FF6B6B" stroke-width="4"/><path d="M-10 -10L10 10M10 -10L-10 10" stroke="#FF6B6B" stroke-width="5" stroke-linecap="round"/></g>
+      </svg>
+    </div>
+  </div>
+  <div class="fila" style="margin-top:30px;gap:20px;justify-content:center">
+    <span class="chip" style="color:var(--seguridad)">Seguridad · un equipo comprometido no alcanza a los demás</span>
+    <span class="chip" style="color:var(--privada)">Rendimiento · la difusión no sale del segmento</span>
+    <span class="chip" style="color:var(--naranja)">Control · reglas por grupo</span>
+  </div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>VLANs en AWS · Redes de Datos II</span><span class="n"></span></div>
+</section>

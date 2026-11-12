@@ -1,0 +1,10 @@
+# Prueba local: docker compose up --build  →  http://localhost:8080
+services:
+  app:
+    build: .
+    ports: ["8080:8080"]
+    environment: { DB_HOST: db, DB_USER: reservas, DB_PASS: reservas, DB_NAME: reservas }
+    depends_on: [db]
+  db:
+    image: mysql:8.0
+    environment: { MYSQL_DATABASE: reservas, MYSQL_USER: reservas, MYSQL_PASSWORD: reservas, MYSQL_RANDOM_ROOT_PASSWORD: "yes" }

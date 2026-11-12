@@ -1,0 +1,22 @@
+<section class="slide">
+  <div class="ceja">Los equipos en la consola de AWS</div>
+  <h2>Solo el equipo de pruebas tiene dirección pública</h2>
+  <div class="col crece" style="gap:18px;min-height:0">
+    <div class="fila" style="gap:26px;align-items:center">
+      <div class="col" style="width:400px;gap:6px;flex:none"><h3 style="display:flex;align-items:center;gap:12px;font-size:29px"><img src="{{img:logos/aws-ec2.svg}}" style="height:50px;border-radius:6px">Servidores (EC2)</h3>
+        <p style="font-size:23px;line-height:1.3"><b class="mono">vlans-pruebas</b> tiene IP pública <span class="mono">3.138.143.128</span>. <b class="mono">vlans-app</b> no tiene ninguna: desde Internet no hay a dónde apuntar.</p></div>
+      <div class="cap crece"><img src="{{img:img/con_ec2.png}}"></div>
+    </div>
+    <div class="fila paso" data-paso="1" style="gap:26px;align-items:center">
+      <div class="col" style="width:400px;gap:6px;flex:none"><h3 style="display:flex;align-items:center;gap:12px;font-size:29px"><img src="{{img:logos/aws-rds.svg}}" style="height:50px;border-radius:6px">Base de datos (RDS)</h3>
+        <p style="font-size:23px;line-height:1.3">MySQL Community en <span class="mono">db.t4g.micro</span>. «Puerta de enlace a Internet: <b>Desactivado</b>».</p></div>
+      <div class="cap crece"><img src="{{img:img/con_rds.png}}"></div>
+    </div>
+    <div class="fila paso" data-paso="2" style="gap:20px">
+      <div class="tarjeta crece" style="padding:18px 24px;display:flex;align-items:center;gap:16px"><img src="{{img:logos/aws-nat.svg}}" style="height:56px;background:#fff;border-radius:50%;padding:3px"><p style="font-size:24px">La aplicación sale a Internet con una sola dirección, la del NAT: <b class="mono">77.114.18.158</b>. Las conexiones solo se pueden iniciar desde dentro.</p></div>
+      <div class="tarjeta" style="padding:18px 24px;display:flex;align-items:center;gap:16px;width:560px"><img src="{{img:logos/aws-elb.svg}}" style="height:56px;border-radius:6px"><p style="font-size:24px">El balanceador es la única entrada pública, en el puerto <b class="mono">80</b>.</p></div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Capturas de la consola de AWS · Fuente: AWS (s.f.-g)</span><span class="n"></span></div>
+</section>

@@ -1,0 +1,10 @@
+const { chromium } = require("/Users/acanon/lab3_k6/node_modules/playwright");
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1100,height:820},deviceScaleFactor:2});
+await p.goto("http://vlans-balanceador-2110447132.us-east-2.elb.amazonaws.com",{waitUntil:"networkidle"});await p.waitForTimeout(1200);
+await p.fill('input[name=nombre]','Demostración en clase');await p.selectOption('select[name=sala]','Laboratorio de Redes');await p.fill('input[name=fecha]','2026-11-12');
+await p.screenshot({path:"capturas/03_despliegue/02_demo_formulario_lleno.png"});
+await p.click('button:has-text("Reservar")');await p.waitForTimeout(1500);
+await p.screenshot({path:"capturas/03_despliegue/03_demo_reserva_creada.png"});
+await p.setViewportSize({width:900,height:360});
+await p.goto("http://vlans-balanceador-2110447132.us-east-2.elb.amazonaws.com/api/info");await p.waitForTimeout(600);await p.screenshot({path:"capturas/03_despliegue/04_api_info.png"});
+await b.close();console.log("ok demo");})();

@@ -1,0 +1,25 @@
+<section class="slide">
+  <div class="ceja">Evidencia</div>
+  <h2>La propia red deja registrado qué aceptó y qué rechazó</h2>
+  <div class="fila" style="align-items:center;gap:18px;margin-bottom:18px">
+    <img src="{{img:logos/aws-flowlogs.svg}}" style="height:62px;background:#fff;border-radius:50%;padding:4px"><img src="{{img:logos/aws-cloudwatch.svg}}" style="height:62px;border-radius:6px">
+    <p style="font-size:26px">Registros de tráfico de la VPC (flow logs) en CloudWatch · conexiones hacia la base de datos, puerto 3306</p>
+  </div>
+  <div class="term" style="font-size:23px;padding:24px 28px"><span class="c">interfaz               origen       destino     p.origen p.destino  paquetes  acción</span>
+eni-034c4331592ad2373  10.0.11.235  10.0.21.29  47766    3306       6         <span class="ok">ACCEPT</span>
+eni-0b240a67462dd930c  10.0.11.235  10.0.21.29  47766    3306       6         <span class="ok">ACCEPT</span>
+eni-0b240a67462dd930c  10.0.1.120   10.0.21.29  42448    3306       5         <span class="no">REJECT</span></div>
+  <div class="fila crece" style="gap:26px;margin-top:26px">
+    <div class="tarjeta crece" style="border-color:#3FB95088;display:flex;gap:20px;align-items:center">
+      <img class="ico g" src="{{img:logos/aws-ec2.svg}}">
+      <div><h3 style="color:#56D364">ACCEPT · desde la aplicación</h3><p style="font-size:25px;margin-top:6px"><b class="mono">10.0.11.235</b> pertenece a sg-app y a la subred 10.0.11.0/24: pasa las tres barreras.</p></div>
+    </div>
+    <div class="tarjeta crece paso" data-paso="1" style="border-color:#FF6B6B88;display:flex;gap:20px;align-items:center">
+      <img class="ico g" src="{{img:logos/aws-instance.svg}}" style="background:#fff;padding:8px">
+      <div><h3 style="color:#FF8A8A">REJECT · desde la subred pública</h3><p style="font-size:25px;margin-top:6px"><b class="mono">10.0.1.120</b> está dentro de la misma VPC y, aun así, la capa de datos descarta sus cinco paquetes.</p></div>
+    </div>
+  </div>
+  <p class="paso" data-paso="1" style="font-size:28px;margin-top:24px;color:#C9D3E2">Es lo mismo que haría una ACL entre la VLAN 10 y la VLAN 30, pero aplicado por software y auditable línea por línea.</p>
+  <div style="height:46px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Fuente: AWS (s.f.-e, s.f.-f) · registros reales del 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>

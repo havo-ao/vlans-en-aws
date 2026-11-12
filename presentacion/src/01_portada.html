@@ -1,0 +1,38 @@
+<section class="slide" style="padding:84px 112px">
+  <div class="fila" style="justify-content:space-between;align-items:center">
+    <img src="{{img:logos/ueb-footer.svg}}" style="height:92px">
+    <img src="{{img:logos/aws-cloud-logo.svg}}" style="height:84px;border-radius:10px">
+  </div>
+  <div class="fila crece" style="align-items:center;gap:60px">
+    <div class="col crece" style="gap:26px">
+      <div class="ceja">Redes de Datos II · Proyecto final</div>
+      <h1>VLANs<br>en <em>AWS</em></h1>
+      <p style="font-size:38px;max-width:860px;color:#C9D3E2">Segmentar una red cuando ya no hay switches: de la etiqueta 802.1Q a la VPC.</p>
+    </div>
+    <div style="width:700px;height:560px;position:relative;flex:none">
+      <div style="position:absolute;left:40px;right:0;top:0;height:156px;border-radius:22px;border:2px solid var(--publica);background:#7AA11626;display:flex;align-items:center;gap:22px;padding:0 34px;animation:flotar 6s ease-in-out infinite">
+        <img class="ico" src="{{img:logos/aws-elb.svg}}"><img class="ico" src="{{img:logos/aws-nat.svg}}" style="background:#fff;border-radius:50%;padding:6px">
+        <div><h3>Subred pública</h3><p style="font-size:24px" class="mono">10.0.1.0/24</p></div>
+      </div>
+      <div style="position:absolute;left:20px;right:20px;top:200px;height:156px;border-radius:22px;border:2px solid var(--privada);background:#00A4A626;display:flex;align-items:center;gap:22px;padding:0 34px;animation:flotar 6s ease-in-out .6s infinite">
+        <img class="ico" src="{{img:logos/aws-ec2.svg}}"><img class="ico" src="{{img:logos/docker.svg}}">
+        <div><h3>Subred de aplicación</h3><p style="font-size:24px" class="mono">10.0.11.0/24</p></div>
+      </div>
+      <div style="position:absolute;left:0;right:40px;top:400px;height:156px;border-radius:22px;border:2px solid var(--datos);background:#C925D126;display:flex;align-items:center;gap:22px;padding:0 34px;animation:flotar 6s ease-in-out 1.2s infinite">
+        <img class="ico" src="{{img:logos/aws-rds.svg}}"><img class="ico" src="{{img:logos/mysql.svg}}" style="background:#fff;border-radius:12px;padding:6px">
+        <div><h3>Subred de datos</h3><p style="font-size:24px" class="mono">10.0.21.0/24</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="fila" style="justify-content:space-between;align-items:flex-end">
+    <div>
+      <h3 style="font-size:34px">Juan José Ascuntar · Andrés Felipe Cañón</h3>
+      <p style="font-size:24px;margin-top:6px">Facultad de Ingeniería · Profesor Edward P. Guillén · Noviembre de 2026</p>
+    </div>
+    <div class="fila" style="gap:18px;align-items:center">
+      <span style="font-size:22px;color:var(--tenue)">Construido con</span>
+      <img src="{{img:logos/terraform.svg}}" style="height:46px"><img src="{{img:logos/docker.svg}}" style="height:46px">
+      <img src="{{img:logos/nodejs.svg}}" style="height:46px"><img src="{{img:logos/mysql.svg}}" style="height:46px;background:#fff;border-radius:8px;padding:3px">
+    </div>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+[
+ {
+  "cmd": "docker --version",
+  "out": "Docker version 25.0.14, build 0bab007"
+ },
+ {
+  "cmd": "docker ps --format 'table {{.Names}}\\t{{.Image}}\\t{{.Status}}'",
+  "out": "NAMES      IMAGE      STATUS\nreservas   reservas   Up 20 minutes"
+ },
+ {
+  "cmd": "docker images --format 'table {{.Repository}}\\t{{.Tag}}\\t{{.Size}}'",
+  "out": "REPOSITORY   TAG       SIZE\nreservas     latest    191MB"
+ },
+ {
+  "cmd": "docker inspect -f 'red={{.HostConfig.NetworkMode}} reinicio={{.HostConfig.RestartPolicy.Name}}' reservas",
+  "out": "red=host reinicio=unless-stopped"
+ },
+ {
+  "cmd": "docker logs reservas 2>&1 | tail -3",
+  "out": "API escuchando en 8080\nBase de datos lista"
+ },
+ {
+  "cmd": "ss -ltnp | grep 8080 | awk '{print $1, $4, $6}'",
+  "out": "LISTEN 0.0.0.0:8080 users:((\"node\",pid=20746,fd=19))"
+ }
+]

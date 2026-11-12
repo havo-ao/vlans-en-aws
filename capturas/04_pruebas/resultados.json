@@ -1,0 +1,73 @@
+{
+ "fecha": "2026-11-12 02:18:17",
+ "url": "http://vlans-balanceador-2110447132.us-east-2.elb.amazonaws.com",
+ "bd": "vlans-mysql.cvq082gq6wnz.us-east-2.rds.amazonaws.com",
+ "ip_bd": "10.0.21.29",
+ "ip_app": "10.0.11.235",
+ "nat": "77.114.18.158",
+ "pruebas": [
+  {
+   "n": 1,
+   "origen": "Internet",
+   "destino": "Balanceador :80",
+   "esperado": "permitido",
+   "comando": "curl http://vlans-balanceador-2110447132.us-east-2.elb.amazonaws.com/api/health",
+   "salida": "200 OK",
+   "cumple": true
+  },
+  {
+   "n": 2,
+   "origen": "Internet",
+   "destino": "Base de datos 10.0.21.29:3306",
+   "esperado": "bloqueado",
+   "comando": "nc -vz -w 5 vlans-mysql.cvq082gq6wnz.us-east-2.rds.amazonaws.com 3306",
+   "salida": "SIN RESPUESTA (TimeoutError)",
+   "cumple": true
+  },
+  {
+   "n": 3,
+   "origen": "Internet",
+   "destino": "Aplicación 10.0.11.235:8080",
+   "esperado": "bloqueado",
+   "comando": "nc -vz -w 5 10.0.11.235 8080",
+   "salida": "SIN RESPUESTA (TimeoutError)",
+   "cumple": true
+  },
+  {
+   "n": 4,
+   "origen": "Subred pública",
+   "destino": "Base de datos 10.0.21.29:3306",
+   "esperado": "bloqueado",
+   "comando": "</dev/tcp/10.0.21.29/3306",
+   "salida": "SIN RESPUESTA",
+   "cumple": true
+  },
+  {
+   "n": 5,
+   "origen": "Subred pública",
+   "destino": "Aplicación 10.0.11.235:8080",
+   "esperado": "bloqueado",
+   "comando": "</dev/tcp/10.0.11.235/8080",
+   "salida": "SIN RESPUESTA",
+   "cumple": true
+  },
+  {
+   "n": 6,
+   "origen": "Aplicación",
+   "destino": "Base de datos 10.0.21.29:3306",
+   "esperado": "permitido",
+   "comando": "</dev/tcp/10.0.21.29/3306",
+   "salida": "ABIERTO",
+   "cumple": true
+  },
+  {
+   "n": 7,
+   "origen": "Aplicación",
+   "destino": "Internet (por el NAT)",
+   "esperado": "permitido",
+   "comando": "curl https://checkip.amazonaws.com",
+   "salida": "77.114.18.158",
+   "cumple": true
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reservas de salas · VLANs en AWS</title>
+<style>
+:root{--tinta:#232F3E;--naranja:#FF9900;--fondo:#F2F3F3;--borde:#D5DBDB}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 -apple-system,'Segoe UI',Arial,sans-serif;background:var(--fondo);color:var(--tinta)}
+header{background:var(--tinta);color:#fff;padding:18px 24px;border-bottom:4px solid var(--naranja)}header h1{margin:0;font-size:22px}header p{margin:2px 0 0;color:#AAB7B8;font-size:14px}
+main{max-width:880px;margin:24px auto;padding:0 16px;display:grid;gap:20px}
+.caja{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:18px 20px}
+h2{font-size:16px;margin:0 0 12px}
+.ruta{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}.salto{flex:1;min-width:150px;border-radius:8px;padding:10px 12px;color:#fff}
+.salto b{display:block;font-size:13px;font-weight:600;opacity:.85}.salto span{font:600 16px Menlo,monospace}
+.s1{background:#545B64}.s2{background:#8C4FFF}.s3{background:#ED7100}.s4{background:#C925D1}
+form{display:flex;gap:8px;flex-wrap:wrap}input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--borde);border-radius:6px}
+input[name=nombre]{flex:1;min-width:160px}button{background:var(--naranja);border-color:var(--naranja);font-weight:600;cursor:pointer}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--borde)}th{font-size:13px;color:#545B64}
+td button{background:none;border:none;color:#D13212;padding:0}
+</style></head><body>
+<header><h1>Reservas de salas</h1><p>Aplicación de demostración · Proyecto «VLANs en AWS» · Redes de Datos II</p></header>
+<main>
+<div class="caja"><h2>Recorrido de esta petición por la red segmentada</h2>
+<div class="ruta">
+<div class="salto s1"><b>Tu equipo (Internet)</b><span id="cliente">…</span></div>
+<div class="salto s2"><b>Balanceador · subred pública</b><span id="balanceador">…</span></div>
+<div class="salto s3"><b>Aplicación · subred privada</b><span id="app">…</span></div>
+<div class="salto s4"><b>Base de datos · subred de datos</b><span id="bd">…</span></div>
+</div></div>
+<div class="caja"><h2>Nueva reserva</h2>
+<form id="f"><input name="nombre" placeholder="Nombre" required maxlength="80">
+<select name="sala"><option>Sala A</option><option>Sala B</option><option>Laboratorio de Redes</option></select>
+<input name="fecha" type="date" required><button>Reservar</button></form></div>
+<div class="caja"><h2>Reservas guardadas en MySQL</h2>
+<table><thead><tr><th>#</th><th>Nombre</th><th>Sala</th><th>Fecha</th><th></th></tr></thead><tbody id="lista"></tbody></table></div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+async function info(){ const i = await (await fetch('/api/info')).json();
+  $('cliente').textContent = i.cliente || 'local'; $('balanceador').textContent = i.balanceador; $('app').textContent = i.servidorApp; $('bd').textContent = i.baseDeDatos || 'sin conexión'; }
+async function listar(){ const r = await fetch('/api/reservas'); const filas = r.ok ? await r.json() : [];
+  $('lista').replaceChildren(...filas.map(x => { const tr = document.createElement('tr');
+    for (const v of [x.id, x.nombre, x.sala, x.fecha]) { const td = document.createElement('td'); td.textContent = v; tr.append(td); }
+    const td = document.createElement('td'), b = document.createElement('button'); b.textContent = 'Cancelar';
+    b.onclick = async () => { await fetch('/api/reservas/' + x.id, { method: 'DELETE' }); listar(); }; td.append(b); tr.append(td); return tr; })); }
+$('f').onsubmit = async e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
+  await fetch('/api/reservas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }); e.target.reset(); listar(); };
+info(); listar();
+</script></body></html>

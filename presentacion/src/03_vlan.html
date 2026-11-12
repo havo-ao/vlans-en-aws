@@ -1,0 +1,61 @@
+<section class="slide">
+  <div class="ceja">La red tradicional</div>
+  <h2>La VLAN segmenta en <em>capa 2</em> con solo 4 bytes</h2>
+  <div class="col" style="gap:10px">
+    <div class="fila mono" style="gap:8px;font-size:24px;text-align:center;font-weight:600">
+      <div class="tarjeta" style="flex:2;padding:20px 8px">MAC destino<br><span style="color:var(--tenue);font-weight:400">6 B</span></div>
+      <div class="tarjeta" style="flex:2;padding:20px 8px">MAC origen<br><span style="color:var(--tenue);font-weight:400">6 B</span></div>
+      <div class="tarjeta paso" data-paso="1" style="flex:2.3;padding:20px 8px;background:var(--naranja);border-color:var(--naranja);color:#161E2D">Etiqueta 802.1Q<br><span style="font-weight:400">4 B</span></div>
+      <div class="tarjeta" style="flex:1.2;padding:20px 8px">Tipo<br><span style="color:var(--tenue);font-weight:400">2 B</span></div>
+      <div class="tarjeta" style="flex:4;padding:20px 8px">Datos<br><span style="color:var(--tenue);font-weight:400">46 – 1500 B</span></div>
+      <div class="tarjeta" style="flex:1.2;padding:20px 8px">FCS<br><span style="color:var(--tenue);font-weight:400">4 B</span></div>
+    </div>
+    <div class="fila paso" data-paso="1" style="gap:8px;align-items:center;padding-left:23.5%">
+      <div class="fila mono" style="gap:6px;font-size:22px;text-align:center;width:760px">
+        <div style="flex:16;border:2px solid var(--naranja);border-radius:10px;padding:10px 4px;color:var(--naranja)">TPID 0x8100<br><span style="color:var(--suave)">16 bits</span></div>
+        <div style="flex:5;border:2px solid var(--naranja);border-radius:10px;padding:10px 4px;color:var(--naranja)">PCP<br><span style="color:var(--suave)">3</span></div>
+        <div style="flex:4;border:2px solid var(--naranja);border-radius:10px;padding:10px 4px;color:var(--naranja)">DEI<br><span style="color:var(--suave)">1</span></div>
+        <div style="flex:13;border:2px solid var(--naranja);border-radius:10px;padding:10px 4px;background:#FF990030;color:#fff;font-weight:700">ID de VLAN<br><span style="color:var(--naranja)">12 bits</span></div>
+      </div>
+      <p style="font-size:28px;margin-left:24px;line-height:1.25"><b>2¹² − 2 = 4.094</b> VLANs por red<br><span style="font-size:22px">los IDs 0 y 4095 están reservados</span></p>
+    </div>
+  </div>
+  <svg viewBox="150 0 1546 400" style="width:100%;flex:1;margin-top:8px" class="paso" data-paso="2">
+    <g font-family="-apple-system,Arial" text-anchor="middle">
+      <rect x="708" y="6" width="280" height="76" rx="16" fill="#202C40" stroke="#FF9900" stroke-width="2.5"/>
+      <text x="848" y="40" fill="#F2F3F3" font-size="24" font-weight="700">Router</text>
+      <text x="848" y="68" fill="#A9B6C9" font-size="20">paso entre VLANs + ACL</text>
+      <line x1="848" y1="82" x2="520" y2="160" stroke="#7C8AA0" stroke-width="3"/>
+      <rect x="320" y="160" width="400" height="70" rx="14" fill="#202C40" stroke="#7C8AA0" stroke-width="2.5"/>
+      <rect x="976" y="160" width="400" height="70" rx="14" fill="#202C40" stroke="#7C8AA0" stroke-width="2.5"/>
+      <text x="520" y="204" fill="#F2F3F3" font-size="24" font-weight="700">Switch 1</text><text x="1176" y="204" fill="#F2F3F3" font-size="24" font-weight="700">Switch 2</text>
+      <g stroke-width="7" class="flujo">
+        <line x1="720" y1="181" x2="976" y2="181" stroke="#7AA116"/><line x1="720" y1="195" x2="976" y2="195" stroke="#00A4A6"/><line x1="720" y1="209" x2="976" y2="209" stroke="#C925D1"/>
+      </g>
+      <text x="848" y="150" fill="#FF9900" font-size="22" font-weight="700">Enlace troncal · un cable, tres VLANs</text>
+      <g stroke-width="4">
+        <line x1="380" y1="230" x2="380" y2="296" stroke="#7AA116"/><line x1="520" y1="230" x2="520" y2="296" stroke="#00A4A6"/><line x1="660" y1="230" x2="660" y2="296" stroke="#C925D1"/>
+        <line x1="1036" y1="230" x2="1036" y2="296" stroke="#7AA116"/><line x1="1176" y1="230" x2="1176" y2="296" stroke="#00A4A6"/><line x1="1316" y1="230" x2="1316" y2="296" stroke="#C925D1"/>
+      </g>
+      <g font-size="18" font-weight="700" fill="#fff">
+        <circle cx="380" cy="336" r="42" fill="#7AA116"/><text x="380" y="343">VLAN 10</text>
+        <circle cx="520" cy="336" r="42" fill="#00A4A6"/><text x="520" y="343">VLAN 20</text>
+        <circle cx="660" cy="336" r="42" fill="#C925D1"/><text x="660" y="343">VLAN 30</text>
+        <circle cx="1036" cy="336" r="42" fill="#7AA116"/><text x="1036" y="343">VLAN 10</text>
+        <circle cx="1176" cy="336" r="42" fill="#00A4A6"/><text x="1176" y="343">VLAN 20</text>
+        <circle cx="1316" cy="336" r="42" fill="#C925D1"/><text x="1316" y="343">VLAN 30</text>
+      </g>
+      <g font-size="22" fill="#A9B6C9" text-anchor="start">
+        <text x="1440" y="186">Cada color es un</text><text x="1440" y="216" fill="#F2F3F3" font-weight="700">dominio de difusión</text>
+        <text x="1440" y="246">distinto, aunque</text><text x="1440" y="276">comparta el switch.</text>
+      </g>
+    </g>
+  </svg>
+  <div class="fila paso" data-paso="3" style="gap:18px;justify-content:center;margin-bottom:6px">
+    <span class="chip" style="color:#A6D13C;font-size:21px">Puerto de acceso · una VLAN, tramas sin etiqueta</span>
+    <span class="chip" style="color:var(--naranja);font-size:21px">Puerto troncal · varias VLANs, tramas etiquetadas</span>
+    <span class="chip" style="color:#E678EC;font-size:21px">Entre VLANs · siempre por un equipo de capa 3</span>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Fuente: IEEE Std 802.1Q-2022</span><span class="n"></span></div>
+</section>

@@ -1,0 +1,42 @@
+<section class="slide">
+  <div class="ceja">El hallazgo</div>
+  <h2>En AWS el cliente <em>no configura VLANs</em>:<br>la red es virtual y de capa 3</h2>
+  <div class="fila crece" style="gap:36px">
+    <div class="tarjeta col" style="flex:1;gap:16px;border-color:var(--red)">
+      <div class="fila" style="align-items:center;gap:18px"><img class="ico" src="{{img:logos/aws-vpc.svg}}"><div><h3>Lo que ve el cliente</h3><p style="font-size:24px">Una VPC: rangos IP y reglas, definidos por software</p></div></div>
+      <div class="col crece" style="gap:12px;justify-content:center;border:2px solid var(--red);border-radius:16px;padding:22px;background:#8C4FFF14">
+        <p class="mono" style="font-size:24px;color:#C9B3FF">VPC 10.0.0.0/16</p>
+        <div class="fila mono" style="align-items:center;gap:14px;font-size:24px;border:2px solid var(--publica);border-radius:12px;padding:12px 18px;background:#7AA1161F"><b style="width:210px">10.0.1.0/24</b><span style="color:var(--suave);font-family:var(--sans)">subred pública</span></div>
+        <div class="fila mono" style="align-items:center;gap:14px;font-size:24px;border:2px solid var(--privada);border-radius:12px;padding:12px 18px;background:#00A4A61F"><b style="width:210px">10.0.11.0/24</b><span style="color:var(--suave);font-family:var(--sans)">subred de aplicación</span></div>
+        <div class="fila mono" style="align-items:center;gap:14px;font-size:24px;border:2px solid var(--datos);border-radius:12px;padding:12px 18px;background:#C925D11F"><b style="width:210px">10.0.21.0/24</b><span style="color:var(--suave);font-family:var(--sans)">subred de datos</span></div>
+      </div>
+    </div>
+    <div class="tarjeta col paso" data-paso="1" style="flex:1;gap:16px">
+      <div class="fila" style="align-items:center;gap:18px"><img class="ico inv" src="{{img:logos/servers.svg}}"><div><h3>Lo que hay debajo</h3><p style="font-size:24px">Infraestructura compartida, redes aisladas lógicamente</p></div></div>
+      <svg viewBox="0 0 720 330" style="width:100%;flex:1">
+        <g font-family="-apple-system,Arial" text-anchor="middle">
+          <rect x="10" y="20" width="250" height="290" rx="16" fill="#161E2D" stroke="#7C8AA0" stroke-width="2"/>
+          <rect x="460" y="20" width="250" height="290" rx="16" fill="#161E2D" stroke="#7C8AA0" stroke-width="2"/>
+          <text x="135" y="52" fill="#A9B6C9" font-size="20">Servidor físico 1</text><text x="585" y="52" fill="#A9B6C9" font-size="20">Servidor físico 2</text>
+          <g font-size="20" font-weight="700" fill="#fff">
+            <rect x="34" y="76" width="202" height="60" rx="10" fill="#8C4FFF"/><text x="135" y="113">Cliente A</text>
+            <rect x="34" y="150" width="202" height="60" rx="10" fill="#ED7100"/><text x="135" y="187">Cliente B</text>
+            <rect x="34" y="224" width="202" height="60" rx="10" fill="#00A4A6"/><text x="135" y="261">Cliente C</text>
+            <rect x="484" y="76" width="202" height="60" rx="10" fill="#ED7100"/><text x="585" y="113">Cliente B</text>
+            <rect x="484" y="150" width="202" height="60" rx="10" fill="#8C4FFF"/><text x="585" y="187">Cliente A</text>
+            <rect x="484" y="224" width="202" height="60" rx="10" fill="#C925D1"/><text x="585" y="261">Cliente D</text>
+          </g>
+          <path d="M236 106 C 340 106, 380 180, 484 180" fill="none" stroke="#8C4FFF" stroke-width="5" class="flujo"/>
+          <g transform="translate(360,128)"><rect x="-78" y="-25" width="156" height="50" rx="8" fill="#161E2D" stroke="#8C4FFF" stroke-width="2.5"/>
+            <text y="-2" fill="#C9B3FF" font-size="17" font-weight="700">VPC A</text><text y="18" fill="#A9B6C9" font-size="15">aislada del resto</text></g>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="fila paso" data-paso="2" style="margin-top:28px;gap:24px">
+    <div class="tarjeta crece" style="padding:22px 26px"><h3 style="color:var(--naranja)">Sin difusión</h3><p style="font-size:24px">AWS no admite broadcast dentro de una VPC.</p></div>
+    <div class="tarjeta crece" style="padding:22px 26px"><h3 style="color:var(--naranja)">Subred ≠ grupo de puertos</h3><p style="font-size:24px">Una subred es un rango IP dentro de la VPC.</p></div>
+    <div class="tarjeta crece" style="padding:22px 26px"><h3 style="color:var(--naranja)">Escala</h3><p style="font-size:24px">Un límite de 4.094 VLANs no sirve a un proveedor con millones de clientes.</p></div>
+  </div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Fuente: AWS (s.f.-i, s.f.-k)</span><span class="n"></span></div>
+</section>
