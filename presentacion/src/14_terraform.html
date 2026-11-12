@@ -1,0 +1,40 @@
+<section class="slide">
+  <div class="ceja">Cómo se hizo · paso 3</div>
+  <h2>La red se escribe como <em>código</em>, archivo por archivo</h2>
+  <div class="fila crece" style="gap:28px;min-height:0">
+    <div class="col" style="flex:1;gap:14px;min-height:0">
+      <div class="fila" style="align-items:center;gap:14px"><img src="{{img:logos/terraform.svg}}" style="height:52px"><h3>Terraform · así se escribe la segmentación</h3></div>
+      <div class="term crece" style="font-size:19.5px;line-height:1.45"><span class="c"># red.tf · Subredes: el equivalente a las VLANs</span>
+<span class="p">resource</span> "aws_subnet" "datos" {
+  count             = 2
+  vpc_id            = aws_vpc.principal.id
+  cidr_block        = "10.0.${21 + count.index}.0/24"
+  availability_zone = local.zonas[count.index]
+}
+
+<span class="c"># red.tf · La tabla de datos no tiene ruta a Internet</span>
+<span class="p">resource</span> "aws_route_table" "datos" {
+  vpc_id = aws_vpc.principal.id
+}
+
+<span class="c"># seguridad.tf · MySQL solo desde el grupo de la aplicación</span>
+<span class="p">resource</span> "aws_vpc_security_group_ingress_rule" "datos_desde_app" {
+  security_group_id            = aws_security_group.datos.id
+  referenced_security_group_id = aws_security_group.app.id
+  ip_protocol                  = "tcp"
+  from_port                    = 3306
+  to_port                      = 3306
+}</div>
+    </div>
+    <div class="col" style="flex:.95;gap:14px">
+      <style>.arch{padding:16px 22px;display:flex;align-items:center;gap:18px}.arch .c{font-size:54px;font-weight:800;line-height:1;color:var(--naranja);width:74px;text-align:right;flex:none}.arch b{font-family:var(--mono);font-size:25px}.arch p{font-size:21.5px;line-height:1.3}</style>
+      <div class="tarjeta arch"><span class="c">24</span><div><b>red.tf</b><p>VPC, 6 subredes, puerta de enlace, NAT, 3 tablas de ruteo, NACL y registros de tráfico</p></div></div>
+      <div class="tarjeta arch"><span class="c">13</span><div><b>seguridad.tf</b><p>4 Security Groups, sus 6 reglas y los permisos de los servidores</p></div></div>
+      <div class="tarjeta arch"><span class="c">3</span><div><b>datos.tf</b><p>MySQL administrado, su grupo de subredes y una clave generada al azar</p></div></div>
+      <div class="tarjeta arch"><span class="c">6</span><div><b>computo.tf</b><p>2 servidores, el balanceador y su conexión con la API</p></div></div>
+      <div class="tarjeta paso" data-paso="1" style="padding:16px 22px;display:flex;align-items:center;gap:16px"><img src="{{img:logos/aws-ssm.svg}}" style="height:50px;border-radius:6px"><p style="font-size:22px"><b>46 recursos en total.</b> Ningún servidor abre SSH: se administran con Systems Manager.</p></div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Código del repositorio github.com/havo-ao/vlans-en-aws</span><span class="n"></span></div>
+</section>

@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="ceja">Cómo se hizo · pasos 1 y 2</div>
+  <h2>Cuenta, usuario de trabajo y herramientas</h2>
+  <div class="fila crece" style="gap:28px;min-height:0">
+    <div class="col" style="flex:.9;gap:16px">
+      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--linea);box-shadow:0 12px 40px #0008"><img src="{{img:img/correo.png}}" style="width:100%;display:block"></div>
+      <p style="font-size:22px">Correo de AWS al activar la cuenta: plan gratuito con 100 USD de crédito y vigencia de seis meses.</p>
+    </div>
+    <div class="col" style="flex:1.1;gap:14px">
+      <div class="term" style="font-size:19px;line-height:1.5"><span class="c"># 1. Las llaves del usuario de trabajo quedan solo en el portátil</span>
+<span class="p">$</span> aws configure
+AWS Access Key ID [None]: ********************
+AWS Secret Access Key [None]: ********************
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+<span class="c"># 2. Se comprueba quién está conectado</span>
+<span class="p">$</span> aws sts get-caller-identity
+"Arn": "arn:aws:iam::3472••••6535:user/<span class="ok">andres-admin</span>"
+
+<span class="c"># 3. Herramientas instaladas con Homebrew</span>
+<span class="p">$</span> aws --version
+aws-cli/2.40.1 Python/3.15.2 Darwin/24.6.0
+<span class="p">$</span> terraform version
+Terraform v1.17.2 · provider hashicorp/aws v6.73.0</div>
+      <div class="fila paso" data-paso="1" style="gap:14px">
+        <div class="tarjeta crece" style="padding:16px 20px;display:flex;gap:14px;align-items:center"><img src="{{img:logos/aws-iam.svg}}" style="height:50px;border-radius:6px"><p style="font-size:22px"><b>Usuario IAM</b>, no el usuario raíz de la cuenta.</p></div>
+        <div class="tarjeta crece" style="padding:16px 20px"><p style="font-size:22px"><b>Ninguna clave en el código:</b> Terraform lee las llaves del equipo y genera la de la base de datos.</p></div>
+      </div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Salidas reales de la terminal; llaves y número de cuenta ocultos</span><span class="n"></span></div>
+</section>

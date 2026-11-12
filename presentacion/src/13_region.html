@@ -1,0 +1,29 @@
+<section class="slide">
+  <div class="ceja">Cómo se hizo · un obstáculo real</div>
+  <h2>La cuenta rechazaba todo… hasta que cambiamos de <em>región</em></h2>
+  <div class="fila crece" style="gap:28px;min-height:0">
+    <div class="col" style="flex:1.2;gap:14px">
+      <div class="term crece" style="font-size:19.5px;line-height:1.5"><span class="p">$</span> aws ec2 describe-vpcs --region us-east-1
+<span class="no">An error occurred (UnauthorizedOperation)</span>: You are not
+authorized to perform: ec2:DescribeVpcs <span class="no">with an explicit
+deny in a service control policy</span>
+
+<span class="p">$</span> aws ec2 describe-vpcs --region us-east-2
+VPC                     CIDR            PorDefecto
+<span class="ok">vpc-0cd3464b65d021b35   172.31.0.0/16   True</span>
+
+<span class="p">$</span> aws configure set region us-east-2
+
+<span class="c"># Antes de crear nada: ¿la cuenta permite cada recurso?</span>
+<span class="p">$</span> aws ec2 create-nat-gateway --subnet-id … <span class="ok">--dry-run</span>
+<span class="ok">DryRunOperation</span>: Request would have succeeded</div>
+    </div>
+    <div class="col" style="flex:1;gap:14px">
+      <div class="tarjeta" style="padding:18px 24px;border-left:6px solid var(--no)"><h3 style="font-size:27px;color:#FF8A8A">Síntoma</h3><p style="font-size:23px">Red, servidores, base de datos y balanceador respondían «denegado», aun con usuario administrador.</p></div>
+      <div class="tarjeta paso" data-paso="1" style="padding:18px 24px;border-left:6px solid var(--naranja)"><h3 style="font-size:27px;color:var(--naranja)">Diagnóstico</h3><p style="font-size:23px">El rechazo venía de una política de AWS sobre la cuenta, no de nuestro usuario. La pista estaba en la URL de la consola: <span class="mono">us-east-2</span>.</p></div>
+      <div class="tarjeta paso" data-paso="2" style="padding:18px 24px;border-left:6px solid var(--ok)"><h3 style="font-size:27px;color:#56D364">Solución</h3><p style="font-size:23px">Trabajar en Ohio y dejar la región como variable en Terraform. Antes de desplegar, se probó cada recurso «en seco».</p></div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Salidas reales de la terminal · 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>

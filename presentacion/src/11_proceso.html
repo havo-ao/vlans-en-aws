@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="ceja">Cómo se hizo</div>
+  <h2>Seis pasos, de una cuenta vacía a la evidencia</h2>
+  <style>
+    .pasos{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1}
+    .pasos .tarjeta{display:flex;flex-direction:column;gap:10px;padding:24px 26px;position:relative}
+    .pasos .num{font-size:70px;font-weight:800;line-height:.9;color:var(--naranja)}
+    .pasos h3{font-size:30px}.pasos p{font-size:23px;line-height:1.35}
+    .pasos .her{display:flex;align-items:center;gap:12px;margin-top:auto;font-family:var(--mono);font-size:20px;color:var(--suave)}
+    .pasos .her img{height:40px;border-radius:5px}
+  </style>
+  <div class="pasos">
+    <div class="tarjeta"><div class="fila" style="align-items:center;gap:16px"><span class="num">1</span><h3>Cuenta de AWS</h3></div>
+      <p>Cuenta personal en el plan gratuito: créditos de arranque y ningún cobro.</p>
+      <div class="her"><img src="{{img:logos/aws-cloud-logo.svg}}">plan gratuito · 100 USD</div></div>
+    <div class="tarjeta"><div class="fila" style="align-items:center;gap:16px"><span class="num">2</span><h3>Usuario y herramientas</h3></div>
+      <p>Un usuario de trabajo en lugar del usuario raíz, y dos programas en el portátil.</p>
+      <div class="her"><img src="{{img:logos/aws-iam.svg}}"><img src="{{img:logos/terraform.svg}}">AWS CLI 2.40 · Terraform 1.17</div></div>
+    <div class="tarjeta"><div class="fila" style="align-items:center;gap:16px"><span class="num">3</span><h3>La red como código</h3></div>
+      <p>Cuatro archivos describen la VPC, las subredes, las rutas y las reglas.</p>
+      <div class="her"><img src="{{img:logos/terraform.svg}}">red · seguridad · datos · computo</div></div>
+    <div class="tarjeta paso" data-paso="1"><div class="fila" style="align-items:center;gap:16px"><span class="num">4</span><h3>Despliegue</h3></div>
+      <p>Tres comandos: preparar, revisar el plan y aplicar. 46 recursos en unos 7 minutos.</p>
+      <div class="her"><img src="{{img:logos/aws-vpc.svg}}">init → plan → apply</div></div>
+    <div class="tarjeta paso" data-paso="1"><div class="fila" style="align-items:center;gap:16px"><span class="num">5</span><h3>Aplicación</h3></div>
+      <p>El servidor privado instala Docker, construye la imagen y arranca la API solo.</p>
+      <div class="her"><img src="{{img:logos/docker.svg}}"><img src="{{img:logos/nodejs.svg}}">contenedor en :8080</div></div>
+    <div class="tarjeta paso" data-paso="1"><div class="fila" style="align-items:center;gap:16px"><span class="num">6</span><h3>Pruebas y evidencia</h3></div>
+      <p>Un script lanza los siete intentos de conexión y la red registra cada uno.</p>
+      <div class="her"><img src="{{img:logos/aws-ssm.svg}}"><img src="{{img:logos/aws-flowlogs.svg}}" style="background:#fff;border-radius:50%;padding:3px">Systems Manager · flow logs</div></div>
+  </div>
+  <div style="height:46px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>VLANs en AWS · Redes de Datos II</span><span class="n"></span></div>
+</section>

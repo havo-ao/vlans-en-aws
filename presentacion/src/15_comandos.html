@@ -1,0 +1,44 @@
+<section class="slide">
+  <div class="ceja">Cómo se hizo · paso 4</div>
+  <h2>Tres comandos: preparar, revisar y aplicar</h2>
+  <style>.c3{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:22px;flex:1;min-height:0}
+    .c3 .col{gap:12px;min-height:0}.c3 h3{display:flex;align-items:center;gap:12px;font-size:30px}.c3 h3 span{font-size:46px;font-weight:800;color:var(--naranja)}
+    .c3 p{font-size:22.5px;line-height:1.35}.c3 .term{font-size:17.5px;line-height:1.5;flex:1}</style>
+  <div class="c3">
+    <div class="col"><h3><span>1</span>terraform init</h3><p>Descarga los conectores que hablan con AWS.</p>
+      <div class="term"><span class="p">$</span> terraform init
+Initializing provider plugins...
+- hashicorp/aws v6.73.0
+- hashicorp/random v3.9.1
+
+<span class="ok">Terraform has been successfully
+initialized!</span></div></div>
+    <div class="col paso" data-paso="1"><h3><span>2</span>terraform plan</h3><p>Muestra lo que va a crear, sin tocar nada. Aquí se revisa antes de gastar.</p>
+      <div class="term"><span class="p">$</span> terraform plan -out=plan.tfplan
+  # aws_vpc.principal will be created
+  # aws_subnet.datos[0] will be created
+  # aws_network_acl.datos will be created
+  # aws_db_instance.mysql will be created
+  …
+<span class="ok">Plan: 46 to add, 0 to change,
+0 to destroy.</span></div></div>
+    <div class="col paso" data-paso="2"><h3><span>3</span>terraform apply</h3><p>Crea los recursos en el orden que exigen sus dependencias.</p>
+      <div class="term"><span class="p">$</span> terraform apply plan.tfplan
+aws_vpc.principal: Creation complete after 3s
+aws_nat_gateway.nat: Creation complete after 1m45s
+aws_lb.web: Creation complete after 3m4s
+aws_db_instance.mysql: Creation complete after 5m38s
+aws_instance.app: Creation complete after 14s
+<span class="ok">Apply complete! Resources: 46 added.</span>
+
+<span class="p">$</span> terraform plan   <span class="c"># al repetirlo</span>
+<span class="ok">No changes.</span> Your infrastructure matches
+the configuration.</div></div>
+  </div>
+  <div class="fila paso" data-paso="2" style="margin-top:18px;gap:16px;justify-content:center">
+    <span class="chip" style="color:var(--suave)">El estado guarda qué existe: repetir el comando no duplica nada</span>
+    <span class="chip" style="color:#FF8A8A">terraform destroy · borra los 46 recursos</span>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Salidas reales de Terraform, abreviadas · 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>

@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="ceja">Cómo se hizo · paso 4</div>
+  <h2>El despliegue, recurso por recurso: 7 minutos</h2>
+  <style>
+    .gantt{display:grid;grid-template-columns:430px 1fr;gap:9px 20px;align-items:center;flex:1;align-content:space-between}
+    .gantt .n{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:650}.gantt .n img{width:42px;height:42px;border-radius:5px}
+    .gantt .pista{position:relative;height:40px;background:#ffffff08;border-radius:8px}
+    .gantt .b{position:absolute;top:0;bottom:0;border-radius:8px;display:flex;align-items:center;padding-left:12px;font-family:var(--mono);font-size:20px;font-weight:700;color:#fff;white-space:nowrap;min-width:10px}
+    .gantt .eje{display:flex;justify-content:space-between;font-family:var(--mono);font-size:19px;color:var(--tenue)}
+    .gantt .t{position:absolute;top:8px;font-family:var(--mono);font-size:20px;color:var(--suave);white-space:nowrap}
+  </style>
+  <div class="gantt">
+    <div></div><div class="eje"><span>0</span><span>1 min</span><span>2 min</span><span>3 min</span><span>4 min</span><span>5 min</span><span>6 min</span><span>7 min</span></div>
+    <div class="n"><img src="{{img:logos/aws-iam.svg}}">Permisos y registro</div><div class="pista"><div class="b" style="left:0;width:1.7%;background:var(--seguridad)"></div><span class="t" style="left:3%">1 a 7 s</span></div>
+    <div class="n"><img src="{{img:logos/aws-vpc.svg}}">VPC y Security Groups</div><div class="pista"><div class="b" style="left:.5%;width:1.4%;background:var(--red)"></div><span class="t" style="left:3%">3 s</span></div>
+    <div class="n"><img src="{{img:logos/aws-private-subnet.svg}}">6 subredes, rutas y NACL</div><div class="pista"><div class="b" style="left:1.2%;width:3%;background:var(--privada)"></div><span class="t" style="left:5.4%">1 a 12 s</span></div>
+    <div class="n"><img src="{{img:logos/aws-instance.svg}}" style="background:#fff;padding:3px">Equipo de pruebas</div><div class="pista"><div class="b" style="left:4.2%;width:3.1%;background:var(--computo)"></div><span class="t" style="left:8.5%">13 s</span></div>
+    <div class="n"><img src="{{img:logos/aws-nat.svg}}" style="background:#fff;border-radius:50%;padding:2px">NAT</div><div class="pista"><div class="b" style="left:4.2%;width:25%;background:var(--red)">1 min 45 s</div></div>
+    <div class="n"><img src="{{img:logos/aws-elb.svg}}">Balanceador</div><div class="pista"><div class="b" style="left:4.2%;width:43.8%;background:var(--red)">3 min 4 s</div></div>
+    <div class="n"><img src="{{img:logos/aws-rds.svg}}">Base de datos MySQL</div><div class="pista"><div class="b" style="left:3.5%;width:80.5%;background:var(--datos)">5 min 38 s</div></div>
+    <div class="n"><img src="{{img:logos/aws-ec2.svg}}">Servidor de la API</div><div class="pista"><div class="b" style="left:84%;width:3.4%;background:var(--computo)"></div><span class="t" style="left:47%">espera a la base de datos → 14 s</span></div>
+    <div class="n"><img src="{{img:logos/docker.svg}}">Docker: instalar y construir</div><div class="pista"><div class="b" style="left:87.4%;width:12.6%;background:#1D63ED">≈ 1 min</div></div>
+  </div>
+  <div class="fila paso" data-paso="1" style="margin-top:20px;gap:20px">
+    <div class="tarjeta crece" style="padding:16px 22px"><p style="font-size:23px"><b>Terraform decide el orden.</b> Lo independiente se crea en paralelo; el servidor de la API espera a la base de datos porque necesita su dirección para arrancar.</p></div>
+    <div class="tarjeta crece" style="padding:16px 22px"><p style="font-size:23px"><b>El cuello de botella es la base de datos:</b> casi todo el tiempo se va en que AWS la aprovisione.</p></div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Duraciones del registro de terraform apply; el inicio de cada barra es aproximado</span><span class="n"></span></div>
+</section>

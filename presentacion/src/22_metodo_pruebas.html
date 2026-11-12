@@ -1,0 +1,36 @@
+<section class="slide">
+  <div class="ceja">Cómo se hizo · paso 6</div>
+  <h2>Cómo se probó: desde <em>tres lugares</em> de la red</h2>
+  <div class="fila" style="gap:20px;margin-bottom:18px">
+    <div class="tarjeta crece" style="padding:16px 20px;display:flex;align-items:center;gap:14px"><img class="inv" src="{{img:logos/users.svg}}" style="height:54px"><p style="font-size:22.5px"><b>1 · Desde Internet</b><br>el portátil, fuera de AWS</p></div>
+    <div class="tarjeta crece" style="padding:16px 20px;display:flex;align-items:center;gap:14px;border-color:var(--publica)"><img src="{{img:logos/aws-instance.svg}}" style="height:54px;background:#fff;padding:4px;border-radius:5px"><p style="font-size:22.5px"><b>2 · Desde la subred pública</b><br>el equipo de pruebas</p></div>
+    <div class="tarjeta crece" style="padding:16px 20px;display:flex;align-items:center;gap:14px;border-color:var(--privada)"><img src="{{img:logos/aws-ec2.svg}}" style="height:54px;border-radius:5px"><p style="font-size:22.5px"><b>3 · Desde la aplicación</b><br>el servidor privado</p></div>
+  </div>
+  <div class="fila crece" style="gap:24px;min-height:0">
+    <div class="col" style="flex:1.2;gap:10px;min-height:0">
+      <h3 style="font-size:26px;display:flex;align-items:center;gap:12px"><img src="{{img:logos/aws-ssm.svg}}" style="height:44px;border-radius:5px">Dentro de AWS, sin SSH: Systems Manager</h3>
+      <div class="term crece" style="font-size:20px;line-height:1.5"><span class="c"># ¿El equipo de pruebas alcanza el puerto de MySQL?</span>
+<span class="p">$</span> aws ssm send-command --instance-ids i-082085c4973b11733 \
+    --document-name AWS-RunShellScript --parameters \
+    'commands=["timeout 5 bash -c \"&lt;/dev/tcp/10.0.21.29/3306\"
+               &amp;&amp; echo ABIERTO || echo SIN RESPUESTA"]'
+<span class="p">$</span> aws ssm get-command-invocation --command-id …
+<span class="no">SIN RESPUESTA</span>
+
+<span class="c"># La misma prueba desde el servidor de la API</span>
+<span class="p">$</span> aws ssm send-command --instance-ids i-0a80b89ed1e9a6548 …
+<span class="ok">ABIERTO</span></div>
+    </div>
+    <div class="col paso" data-paso="1" style="flex:1;gap:10px;min-height:0">
+      <h3 style="font-size:26px;display:flex;align-items:center;gap:12px"><img src="{{img:logos/aws-flowlogs.svg}}" style="height:44px;background:#fff;border-radius:50%;padding:3px">La red confirma cada intento</h3>
+      <div class="term" style="font-size:20px;line-height:1.5"><span class="p">$</span> aws logs filter-log-events \
+    --log-group-name /vpc/vlans-flujo \
+    --filter-pattern '"10.0.21.29" "3306"'
+… 10.0.11.235 10.0.21.29 … 3306 … <span class="ok">ACCEPT</span>
+… 10.0.1.120  10.0.21.29 … 3306 … <span class="no">REJECT</span></div>
+      <div class="tarjeta crece" style="padding:16px 22px"><p style="font-size:22.5px"><b>Todo en un script:</b> <span class="mono">pruebas.py</span> lanza los siete intentos, compara cada resultado con lo esperado y guarda <span class="mono">resultados.json</span>. Cualquiera puede repetirlo.</p></div>
+    </div>
+  </div>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Comandos y salidas reales · 12 de noviembre de 2026</span><span class="n"></span></div>
+</section>
