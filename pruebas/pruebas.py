@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Pruebas de aislamiento: ejecuta cada intento de conexión y guarda el resultado en resultados.json."""
-import json, socket, subprocess, time, urllib.request
+import json, os, socket, subprocess, time, urllib.request
 
 def sh(*a): return subprocess.run(a, capture_output=True, text=True).stdout.strip()
 def tf(nombre): return json.loads(sh("terraform", "-chdir=../infra", "output", "-json"))[nombre]["value"]
@@ -42,4 +42,4 @@ anotar(5, "Subred pública", f"Aplicación {ip_app}:8080", "bloqueado", f"</dev/
 anotar(6, "Aplicación", f"Base de datos {IP_BD}:3306", "permitido", f"</dev/tcp/{IP_BD}/3306", remoto(IDS["app"], puerto(IP_BD, 3306)))
 anotar(7, "Aplicación", "Internet (por el NAT)", "permitido", "curl https://checkip.amazonaws.com", remoto(IDS["app"], "curl -s -m 8 https://checkip.amazonaws.com"))
 
-json.dump(dict(fecha=time.strftime("%Y-%m-%d %H:%M:%S"), url=URL, bd=BD, ip_bd=IP_BD, ip_app=ip_app, nat=NAT, pruebas=R), open("resultados.json", "w"), ensure_ascii=False, indent=1)
+json.dump(dict(fecha=time.strftime("%Y-%m-%d %H:%M:%S"), url=URL, bd=BD, ip_bd=IP_BD, ip_app=ip_app, nat=NAT, pruebas=R), open(os.environ.get("SALIDA", "resultados.json"), "w"), ensure_ascii=False, indent=1)
