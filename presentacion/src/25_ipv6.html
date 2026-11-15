@@ -1,0 +1,48 @@
+<section class="slide">
+  <div class="ceja">Extensión</div>
+  <h2>¿Y con <em>IPv6</em>? La misma red, con otra salida</h2>
+  <style>
+    .v6{display:grid;grid-template-columns:240px 1fr 1fr;gap:6px 12px;align-content:space-between;flex:1}
+    .v6 .h{font-size:21px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--tenue);padding:0 4px 2px}
+    .v6 .k{font-size:23px;font-weight:700;color:var(--naranja);display:flex;align-items:center}
+    .v6 .a,.v6 .b{font-size:20px;line-height:1.25;border-radius:10px;padding:6px 14px;display:flex;align-items:center}
+    .v6 .a{background:#ffffff0a;border:1px solid var(--linea);color:var(--suave)}
+    .v6 .b{background:#8C4FFF1F;border:1.5px solid #8C4FFF99;color:#E7DEFF}
+    .v6 code{font-family:var(--mono);font-size:19px;color:#fff}
+  </style>
+  <div class="fila crece" style="gap:26px;min-height:0">
+    <div class="v6" style="flex:1.35">
+      <div></div><div class="h">Como quedó · IPv4</div><div class="h">Con IPv6 · doble pila</div>
+      <div class="k">Direcciones</div><div class="a"><span><code>10.0.0.0/16</code>, privadas, las elegimos nosotros</span></div><div class="b"><span>Bloque <code>/56</code> que asigna AWS: públicas y únicas</span></div>
+      <div class="k">Subredes</div><div class="a"><span><code>/24</code>: 251 direcciones útiles</span></div><div class="b"><span><code>/64</code> fijo; caben 256 subredes en la VPC</span></div>
+      <div class="k">Salida de la aplicación</div><div class="a"><span>NAT Gateway: traduce a una IP pública y cobra por hora</span></div><div class="b"><span><b>Puerta solo de salida:</b> no traduce y no tiene costo</span></div>
+      <div class="k">Capa pública</div><div class="a"><span><code>0.0.0.0/0</code> → puerta de enlace de Internet</span></div><div class="b"><span>Se añade <code>::/0</code> hacia la misma puerta</span></div>
+      <div class="k">Capa de datos</div><div class="a"><span>Sin ruta hacia fuera</span></div><div class="b"><span>Igual: no recibe ruta <code>::/0</code></span></div>
+      <div class="k">Reglas</div><div class="a"><span>Rangos IPv4 y grupos referenciados</span></div><div class="b"><span>Reglas aparte para <code>::/0</code> y los <code>/64</code>; las de grupo no cambian</span></div>
+      <div class="k">Balanceador</div><div class="a"><span>Solo IPv4</span></div><div class="b"><span>Modo doble pila: <code>dualstack</code></span></div>
+    </div>
+    <div class="col" style="flex:1;gap:12px;min-height:0">
+      <div class="fila" style="align-items:center;gap:12px"><img src="{{img:logos/terraform.svg}}" style="height:44px"><h3 style="font-size:27px">Lo que se añade al código</h3></div>
+      <div class="term crece" style="font-size:17.5px;line-height:1.45"><span class="c"># La VPC pide un bloque IPv6 y cada subred toma un /64</span>
+assign_generated_ipv6_cidr_block = true
+ipv6_cidr_block = cidrsubnet(
+  aws_vpc.principal.ipv6_cidr_block, 8, 11)
+
+<span class="c"># Sin NAT: la aplicación sale por una puerta
+# que no deja entrar conexiones</span>
+<span class="p">resource</span> "aws_egress_only_internet_gateway" "salida" {
+  vpc_id = aws_vpc.principal.id
+}
+<span class="p">resource</span> "aws_route" "app_ipv6" {
+  route_table_id              = aws_route_table.app.id
+  destination_ipv6_cidr_block = "::/0"
+  egress_only_gateway_id      =
+    aws_egress_only_internet_gateway.salida.id
+}</div>
+      <span class="chip" style="color:var(--suave);font-size:20px;align-self:flex-start">Validado con terraform plan: 50 recursos · no desplegado</span>
+    </div>
+  </div>
+  <p class="paso" data-paso="1" style="font-size:24px;margin-top:16px;color:#DCE4F0">Con IPv6 la dirección privada deja de proteger, porque todas son públicas: el aislamiento lo dan <b>las rutas y las reglas</b>. En doble pila, el NAT se conserva solo para el tráfico IPv4.</p>
+  <div style="height:44px"></div>
+  <div class="pie"><img src="{{img:logos/ueb-footer.svg}}"><span>Fuente: AWS (2021; s.f.-i) · código en ejemplos/ipv6 del repositorio</span><span class="n"></span></div>
+</section>

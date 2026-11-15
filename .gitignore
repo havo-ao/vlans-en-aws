@@ -14,3 +14,12 @@ libreto/
 pruebas/mis_resultados.json
 node_modules/
 .DS_Store
+
+# Ejemplos: mismo criterio que infra/
+ejemplos/**/.terraform/
+ejemplos/**/*.tfstate*
+ejemplos/**/*.tfplan
+
+# Capturas completas de la consola (muestran el número de cuenta)
+capturas/06_cloudshell/
+capturas/07_manual/

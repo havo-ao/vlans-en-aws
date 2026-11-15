@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Preguntas · VLANs en AWS</title>
+<style>
+@page{size:Letter;margin:1.8cm 1.9cm}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:10.8pt;line-height:1.5;color:#1b2430;margin:0}
+h1{font-size:20pt;margin:0 0 2px;color:#232F3E}h1 span{color:#E07B00}
+.sub{color:#5b6675;font-size:10pt;margin:0 0 4px}
+.intro{border:1px solid #d5dbdb;border-radius:8px;padding:9px 13px;margin:12px 0 4px;background:#f7f8f8;font-size:10.2pt}
+h2{font-size:13pt;color:#232F3E;border-bottom:3px solid #FF9900;padding-bottom:3px;margin:22px 0 8px;page-break-after:avoid}
+.enun{font-size:11.4pt;font-weight:600;margin:6px 0 8px}
+ol.op{list-style:none;padding:0;margin:0 0 10px}
+ol.op li{border:1px solid #d5dbdb;border-radius:7px;padding:7px 12px;margin:5px 0;display:flex;gap:10px;page-break-inside:avoid}
+ol.op li b{color:#232F3E;flex:none}
+ol.op li.ok{border:2px solid #1a7f37;background:#eef9f0}
+.resp{background:#1a7f37;color:#fff;font-weight:700;border-radius:6px;padding:4px 12px;display:inline-block;margin:2px 0 6px;font-size:10.4pt}
+h3{font-size:10.6pt;margin:10px 0 3px;color:#232F3E;text-transform:uppercase;letter-spacing:.5px}
+p{margin:4px 0}
+ul{margin:4px 0 6px;padding-left:18px}li{margin:2px 0}
+pre{background:#0d1117;color:#e6edf3;border-radius:7px;padding:9px 12px;font-family:Menlo,Consolas,monospace;font-size:8.6pt;line-height:1.45;white-space:pre-wrap;margin:6px 0;page-break-inside:avoid}
+pre .c{color:#8b949e}pre .k{color:#7ee787}
+code{font-family:Menlo,Consolas,monospace;font-size:9.4pt;background:#eef0f2;padding:0 3px;border-radius:3px}
+.mal{font-size:10pt;color:#44505f}
+.nota{font-size:9.6pt;color:#5b6675;border-left:4px solid #FF9900;padding:3px 10px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:9.8pt;margin:6px 0;page-break-inside:avoid}
+th{background:#232F3E;color:#fff;text-align:left;padding:4px 8px}td{padding:4px 8px;border-bottom:1px solid #d5dbdb;vertical-align:top}
+</style></head><body>
+
+<h1>VLANs en <span>AWS</span> · Preguntas formuladas</h1>
+<p class="sub">Redes de Datos II · Universidad El Bosque · Profesor Edward P. Guillén</p>
+<p class="sub"><b>Integrantes:</b> Juan José Ascuntar · Andrés Felipe Cañón</p>
+<div class="intro">Las tres preguntas que nos formularon durante la exposición, en formato de selección múltiple con única respuesta, con la respuesta correcta y su explicación. Los fragmentos de código son los del repositorio del proyecto: <b>github.com/havo-ao/vlans-en-aws</b>.</div>
+
+<!-- ======================= 1 ======================= -->
+<h2>Pregunta 1 · Para qué sirve y cómo se configura el NAT</h2>
+<p class="enun">En la red del proyecto, ¿cuál es la función del NAT Gateway y cómo se configura?</p>
+<ol class="op">
+<li><b>A.</b><span>Publica la aplicación en Internet: recibe las peticiones de los usuarios y las reparte entre los servidores. Se configura en la subred de datos con un puerto de escucha.</span></li>
+<li class="ok"><b>B.</b><span>Permite que los servidores de la subred privada inicien conexiones hacia Internet usando una única dirección pública, sin que desde Internet se pueda iniciar una conexión hacia ellos. Se crea en una subred pública con una IP elástica, y en la tabla de ruteo de la subred privada se agrega la ruta <code>0.0.0.0/0</code> hacia el NAT.</span></li>
+<li><b>C.</b><span>Traduce nombres de dominio a direcciones IP dentro de la VPC. Se configura asociando una zona DNS a cada subred.</span></li>
+<li><b>D.</b><span>Cifra el tráfico entre la subred pública y la privada. Se crea en la subred privada y se agrega la ruta <code>0.0.0.0/0</code> en la tabla de ruteo de la subred pública.</span></li>
+</ol>
+<span class="resp">Respuesta correcta: B</span>
+
+<h3>Explicación</h3>
+<p><b>NAT</b> significa <i>Network Address Translation</i> (traducción de direcciones de red). Los servidores de la capa de aplicación solo tienen direcciones privadas (10.0.11.x), que no existen en Internet. Aun así necesitan salir: para instalar Docker, descargar la imagen base y recibir actualizaciones. El NAT Gateway recibe ese tráfico, cambia la dirección de origen privada por su propia dirección pública y lo envía a Internet; cuando llega la respuesta, la devuelve al servidor que la pidió. Como solo guarda las conexiones que se iniciaron desde dentro, nadie puede abrir una conexión hacia los servidores desde fuera.</p>
+<p><b>El «enlace público».</b> El NAT necesita él mismo salida a Internet, por eso se ubica en una <b>subred pública</b>: una subred cuya tabla de ruteo apunta a la puerta de enlace de Internet. La cadena completa es: servidor privado → NAT (subred pública) → puerta de enlace de Internet → Internet.</p>
+<p><b>Configuración, en tres piezas</b> (archivo <code>infra/red.tf</code>):</p>
+<pre><span class="c"># 1. Una dirección pública fija (IP elástica) para el NAT</span>
+<span class="k">resource</span> "aws_eip" "nat" {
+  domain = "vpc"
+}
+
+<span class="c"># 2. El NAT, ubicado en una subred PÚBLICA y con esa dirección</span>
+<span class="k">resource</span> "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.publica[0].id
+  depends_on    = [aws_internet_gateway.igw]
+}
+
+<span class="c"># 3. La tabla de ruteo de la capa de aplicación envía "todo lo demás" al NAT</span>
+<span class="k">resource</span> "aws_route_table" "app" {
+  vpc_id = aws_vpc.principal.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
+  }
+}</pre>
+<p><b>Comprobación en el proyecto.</b> Desde el servidor de la aplicación se consultó cuál era su dirección vista desde Internet y la respuesta fue <code>77.114.18.158</code>, la IP elástica del NAT y no la del servidor (prueba 7). En sentido contrario, los intentos de conexión desde Internet hacia el servidor no obtuvieron respuesta (prueba 3).</p>
+<p class="mal"><b>Por qué las otras no:</b> A describe al balanceador de carga, que es quien recibe a los usuarios. C describe al servicio DNS. D invierte la configuración (el NAT va en la subred pública y la ruta en la tabla de la privada) y el NAT no cifra.</p>
+<div class="nota">La capa de datos no usa el NAT: su tabla de ruteo no tiene ninguna ruta hacia fuera. Y si la red usara IPv6, el NAT no haría falta para ese tráfico: todas las direcciones IPv6 son públicas y la salida «solo de ida» se logra con una puerta de enlace solo de salida (<i>egress-only internet gateway</i>).</div>
+
+<!-- ======================= 2 ======================= -->
+<h2>Pregunta 2 · Cómo se define la seguridad entre capas</h2>
+<p class="enun">¿Cómo se define en el proyecto la seguridad entre la capa pública, la de aplicación y la de datos?</p>
+<ol class="op">
+<li><b>A.</b><span>Asignando a cada subred un identificador de VLAN 802.1Q distinto, de modo que las tramas de una capa no lleguen a las otras.</span></li>
+<li><b>B.</b><span>Ubicando cada capa en una zona de disponibilidad diferente: los recursos de zonas distintas no pueden comunicarse entre sí.</span></li>
+<li class="ok"><b>C.</b><span>Con tres mecanismos declarados en Terraform: una tabla de ruteo por capa, Security Groups encadenados en los que cada capa solo acepta al grupo de la capa anterior en un puerto concreto, y una NACL en la subred de datos que solo admite a las subredes de aplicación.</span></li>
+<li><b>D.</b><span>Instalando un firewall de software en cada servidor y abriendo manualmente los puertos necesarios desde la consola de AWS.</span></li>
+</ol>
+<span class="resp">Respuesta correcta: C</span>
+
+<h3>Explicación</h3>
+<p>La seguridad se define con tres barreras independientes, todas escritas como código en <code>infra/red.tf</code> e <code>infra/seguridad.tf</code>. Si una quedara mal configurada, las otras dos siguen protegiendo.</p>
+<table>
+<tr><th>Barrera</th><th>Qué controla</th><th>Cómo quedó</th></tr>
+<tr><td><b>Tablas de ruteo</b></td><td>Por dónde puede salir cada subred</td><td>Pública: <code>0.0.0.0/0</code> → Internet. Aplicación: <code>0.0.0.0/0</code> → NAT. Datos: solo la ruta local.</td></tr>
+<tr><td><b>Security Groups</b><br>(con estado, por servidor)</td><td>Quién puede hablarle a cada equipo</td><td>Balanceador: puerto 80 desde Internet. Aplicación: 8080 solo desde el grupo del balanceador. Datos: 3306 solo desde el grupo de la aplicación.</td></tr>
+<tr><td><b>NACL</b><br>(sin estado, por subred)</td><td>Qué entra y sale de la subred de datos</td><td>Entrada: 3306 desde 10.0.11.0/24 y 10.0.12.0/24. Salida: puertos 1024–65535 hacia esas subredes. Todo lo demás se deniega.</td></tr>
+</table>
+<p>La pieza clave es el <b>encadenamiento</b>: la regla no nombra una dirección IP sino a otro Security Group. Así, la base de datos acepta a «quien pertenezca al grupo de la aplicación», sin importar cuántos servidores haya ni qué IP tengan:</p>
+<pre><span class="c"># infra/seguridad.tf — MySQL solo desde el grupo de la aplicación</span>
+<span class="k">resource</span> "aws_vpc_security_group_ingress_rule" "datos_desde_app" {
+  security_group_id            = aws_security_group.datos.id
+  referenced_security_group_id = aws_security_group.app.id
+  ip_protocol                  = "tcp"
+  from_port                    = 3306
+  to_port                      = 3306
+}
+
+<span class="c"># infra/red.tf — la tabla de ruteo de datos no tiene ninguna ruta hacia fuera</span>
+<span class="k">resource</span> "aws_route_table" "datos" {
+  vpc_id = aws_vpc.principal.id
+}</pre>
+<p><b>Comprobación en el proyecto.</b> Un equipo ubicado en la subred pública, dentro de la misma VPC, intentó abrir el puerto 3306 de la base de datos y el 8080 de la aplicación: ninguno respondió (pruebas 4 y 5). El servidor de la aplicación sí abrió el 3306 (prueba 6). Los registros de tráfico de la VPC muestran <code>ACCEPT</code> para la aplicación y <code>REJECT</code> para el equipo de la subred pública.</p>
+<p class="mal"><b>Por qué las otras no:</b> A no aplica porque en AWS el cliente no configura VLANs dentro de la VPC (la única etiqueta 802.1Q aparece en Direct Connect). B es falsa: las subredes de zonas distintas de una misma VPC sí se comunican por la ruta local; las zonas dan disponibilidad, no aislamiento. D no es lo que se hizo: nada se abrió a mano y ningún servidor depende de un firewall propio; las reglas están en la red y en el código.</p>
+
+<!-- ======================= 3 ======================= -->
+<h2>Pregunta 3 · Qué es Terraform</h2>
+<p class="enun">¿Qué es Terraform y qué papel cumplió en el proyecto?</p>
+<ol class="op">
+<li class="ok"><b>A.</b><span>Una herramienta de infraestructura como código: la red, los servidores y la base de datos se describen en archivos de texto, y Terraform se encarga de crearlos, modificarlos o borrarlos en AWS.</span></li>
+<li><b>B.</b><span>Un servicio de AWS que supervisa el tráfico de la red y registra qué conexiones se aceptan o se rechazan.</span></li>
+<li><b>C.</b><span>Un motor de contenedores que empaqueta la aplicación con sus dependencias para ejecutarla en el servidor.</span></li>
+<li><b>D.</b><span>El lenguaje de programación en el que está escrita la aplicación de reservas.</span></li>
+</ol>
+<span class="resp">Respuesta correcta: A</span>
+
+<h3>Explicación</h3>
+<p>Terraform es una herramienta de la empresa HashiCorp para manejar <b>infraestructura como código</b>. En lugar de crear cada recurso con clics en la consola, se escribe en archivos <code>.tf</code> el resultado que se quiere («una VPC con este rango», «dos subredes de datos», «esta regla») y Terraform calcula qué debe crear y en qué orden. Es <b>declarativo</b>: se describe el destino, no los pasos.</p>
+<p>Se usa con tres comandos:</p>
+<table>
+<tr><th>Comando</th><th>Qué hace</th><th>En el proyecto</th></tr>
+<tr><td><code>terraform init</code></td><td>Descarga el conector («proveedor») que sabe hablar con AWS</td><td>Proveedor <code>hashicorp/aws</code> 6.73</td></tr>
+<tr><td><code>terraform plan</code></td><td>Compara el código con lo que existe y muestra los cambios, sin ejecutarlos</td><td>«Plan: 46 to add»</td></tr>
+<tr><td><code>terraform apply</code></td><td>Ejecuta el plan</td><td>46 recursos en unos 7 minutos</td></tr>
+</table>
+<p>Terraform guarda un archivo de <b>estado</b> con lo que ya creó. Por eso, repetir <code>apply</code> sin cambiar el código responde «No changes», y <code>terraform destroy</code> puede borrar exactamente lo que creó.</p>
+<p><b>Papel en el proyecto.</b> Toda la segmentación está en cuatro archivos: <code>red.tf</code> (VPC, subredes, rutas, NAT y NACL), <code>seguridad.tf</code> (Security Groups), <code>datos.tf</code> (MySQL) y <code>computo.tf</code> (servidores y balanceador). Esto hace que la red sea reproducible: cualquier persona con el repositorio la crea con un comando, como muestra el manual.</p>
+<p class="mal"><b>Por qué las otras no:</b> B describe los registros de tráfico de la VPC (<i>flow logs</i>) con CloudWatch. C describe a Docker, que también se usó, pero para la aplicación. D es Node.js (JavaScript); Terraform usa su propio lenguaje de configuración, HCL, y no sirve para programar aplicaciones.</p>
+
+</body></html>

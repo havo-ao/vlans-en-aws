@@ -12,7 +12,8 @@ fi
 tf destroy -input=false -auto-approve
 
 titulo "Verificando que no quedó nada"
-QUEDAN="$(aws resourcegroupstaggingapi get-resources --tag-filters Key=Proyecto,Values=vlans-aws \
-  --query 'length(ResourceTagMappingList)' --output text)"
-if [ "$QUEDAN" = "0" ]; then listo "No queda ningún recurso del proyecto: la cuenta ya no gasta créditos."
-else aviso "Aún aparecen $QUEDAN recursos (algunos tardan unos minutos en desaparecer). Vuelve a ejecutar ./4-destruir.sh --si"; fi
+if [ -z "$(tf state list 2>/dev/null)" ]; then
+  listo "No queda ningún recurso del proyecto: la cuenta ya no gasta créditos."
+else
+  aviso "Aún quedan recursos por borrar. Vuelve a ejecutar:  ./4-destruir.sh --si"
+fi
