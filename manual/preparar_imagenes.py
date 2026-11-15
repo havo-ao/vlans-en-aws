@@ -42,5 +42,5 @@ guardar(Image.open(R / "presentacion/img/mapa.png"), "11_mapa.png", 1500)
 # El borrado: final real del destroy (46 recursos) y la verificación del guion ya corregido.
 im = Image.open(CS / "p4_destruir_t16.png"); w, h = im.size
 guardar(im.crop((0, 905, int(w * .64), 1252)), "12_destruir.png")
-if (CS / "p6_verificacion.png").exists(): terminal("p6_verificacion.png", "13_verificacion.png", alto=330)
-else: print("falta p6_verificacion.png")
+im = Image.open(CS / "p6_verificacion.png"); w, h = im.size
+guardar(im.crop((0, 420, int(w * .64), 512)), "13_verificacion.png")

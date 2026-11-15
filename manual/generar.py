@@ -191,6 +191,7 @@ figcaption{font-size:9.2pt;color:#5b6675;margin-top:3px}
 .nota.ojo{background:#fff4e5;border-color:#e07b00}.nota.bien{background:#eef9f0;border-color:#1a7f37}.nota.dato{background:#eef4ff;border-color:#2f6fd0}
 table{border-collapse:collapse;width:100%;font-size:9.8pt;margin:7px 0 10px;page-break-inside:avoid}
 th{background:#232F3E;color:#fff;text-align:left;padding:5px 8px}td{padding:5px 8px;border-bottom:1px solid #d5dbdb;vertical-align:top}
+td code{white-space:nowrap}
 a{color:#0b5cad;text-decoration:none}"""
 H = [f"<!doctype html><html lang='es'><head><meta charset='utf-8'><title>{TITULO}</title><style>{CSS}</style></head><body>",
      f"<div class='portada'><h1>Manual: monta una red segmentada en <span>AWS</span> desde cero</h1><p>{SUB}</p>"

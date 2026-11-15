@@ -23,3 +23,6 @@ ejemplos/**/*.tfplan
 # Capturas completas de la consola (muestran el número de cuenta)
 capturas/06_cloudshell/
 capturas/07_manual/
+
+# Archivos de la entrega (copias)
+entrega/
